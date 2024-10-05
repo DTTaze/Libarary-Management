@@ -1,8 +1,7 @@
 #include <iostream> 
 #include <cstring>
 #define MAXSACH 1000
-// taicho dien
-// vaicho
+
 using namespace std;
 
 struct DanhMucSach {
