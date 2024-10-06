@@ -1,7 +1,8 @@
 #include <iostream> 
 #include <cstring>
 #define MAXSACH 10000
-
+#define MAXKHUVUC 10 // 10 khu vuc tu A - J
+#define MAXDAY 1000 // 1 day la 1000 cuon sach
 using namespace std;
 
 struct DanhMucSach {
@@ -40,7 +41,7 @@ struct DauSach {
 
 struct DanhSachDauSach{
     int demsach= 0;
-    DauSach* node[MAXSACH];
+    DauSach* node[MAXSACH];     
 };
 
 struct MUONTRA {
@@ -144,20 +145,23 @@ void LayDayNgauNhien (int *A, int m, int n = 1){
     }
 }
 
-void TaoMaSach(char* ma_sach ,int dem_sach){
-    
-    char khu_vuc = 'A' + (dem_sach / 1000);  //moi khu vuc 1000 cuon
+void TaoMaSach(char* ma_sach ,int dem_sach, char* vi_tri){
+    char khu_vuc = 'A' + (dem_sach / 1000);
+    vi_tri[0] = khu_vuc;
+
     int day = (dem_sach % 1000) / 100 + 1; // day 1 den 100
+    vi_tri[1] = day;
     int ID_sach = dem_sach % 100 ; // ID sach trong day
 
-    sprintf(ma_sach, "%c%d-%d", khu_vuc, day, ID_sach);
+    snprintf(ma_sach,10, "%c%d-%03d", khu_vuc, day, ID_sach);// A1-001 , B8-026,...
 }
 
-DanhMucSach* ThemDanhMucSach(DanhMucSach* &head_dms, int trang_thai,const char* vi_tri,int dem_sach) {
+DanhMucSach* ThemDanhMucSach(DanhMucSach* &head_dms, int trang_thai,int dem_sach) {
 
     //them vao dau danh sach voi O(1)
     char ma_sach[10];
-    TaoMaSach(ma_sach,dem_sach);
+    char vi_tri[10];
+    TaoMaSach(ma_sach,dem_sach,vi_tri);
     DanhMucSach* new_dms = new DanhMucSach(ma_sach,trang_thai,vi_tri);
     new_dms->next=head_dms;
     head_dms = new_dms;
@@ -166,14 +170,14 @@ DanhMucSach* ThemDanhMucSach(DanhMucSach* &head_dms, int trang_thai,const char* 
 
 //danh sach dau sach tham chieu mang, danh muc sach tham chieu con tro vi lien ket don
 void ThemDauSach(DanhSachDauSach &danh_sach_dau_sach,const char* I_S_B_N,const char* ten_sach,int so_trang,const char* tac_gia,const char* the_loai, 
-                DanhMucSach* &head_dms, int trang_thai,const char* vi_tri){
+                DanhMucSach* &head_dms, int trang_thai){
     
     if(danh_sach_dau_sach.demsach >= MAXSACH){
         cout<<"Day sach";
         return;
     };
     //tao danh muc sach co ma sach > 0 (demsach mac dinh = 0)
-    DanhMucSach* danh_muc_sach = ThemDanhMucSach(head_dms,trang_thai,vi_tri,danh_sach_dau_sach.demsach);
+    DanhMucSach* danh_muc_sach = ThemDanhMucSach(head_dms,trang_thai,danh_sach_dau_sach.demsach);
 
 
     int n = danh_sach_dau_sach.demsach;
@@ -248,7 +252,7 @@ void NhapDauSachMoi(DanhSachDauSach &danh_sach_dau_sach,
     cin>>vi_tri;
 
     ThemDauSach(danh_sach_dau_sach,I_S_B_N,ten_sach,so_trang, tac_gia, the_loai, 
-                head_dms, trang_thai, vi_tri);
+                head_dms, trang_thai);
 }
 
 
@@ -266,9 +270,9 @@ int main() {
     DanhSachDauSach danh_sach_dau_sach;
     DanhMucSach* danh_muc_sach = nullptr;
 
-    ThemDauSach(danh_sach_dau_sach,"978-0-306-40615-7","Cho Tai Ngu", 154,"Tai cho dien","Ao Tuong",danh_muc_sach,0,"A-001");
-    ThemDauSach(danh_sach_dau_sach,"978-1-4028-9462-6","Cho Kien Ngu", 844,"Kien cho dien","Ao Tuong",danh_muc_sach,0,"A-002");
-    ThemDauSach(danh_sach_dau_sach,"978-0-14-312854-0","Bao dep zai", 1004,"Bao Hoang","Hien Thuc",danh_muc_sach,0,"A-003");
+    ThemDauSach(danh_sach_dau_sach,"978-0-306-40615-7","Cho Tai Ngu", 154,"Tai cho dien","Ao Tuong",danh_muc_sach,0);
+    ThemDauSach(danh_sach_dau_sach,"978-1-4028-9462-6","Cho Kien Ngu", 844,"Kien cho dien","Ao Tuong",danh_muc_sach,0);
+    ThemDauSach(danh_sach_dau_sach,"978-0-14-312854-0","Bao dep zai", 1004,"Bao Hoang","Hien Thuc",danh_muc_sach,0);
 
     InTheoTungTheLoai(danh_sach_dau_sach);
 }
