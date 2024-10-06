@@ -9,16 +9,12 @@ struct DanhMucSach {
     char masach[10];
     int trangthai;
     char vitri[10];
-    DanhMucSach* next;
-    DanhMucSach(const char* ma_sach,int trang_thai,const char* vi_tri, DanhMucSach* ptr_dms_next) : trangthai(trang_thai), next(ptr_dms_next) {
+    DanhMucSach* next= nullptr;
+    DanhMucSach(const char* ma_sach,int trang_thai,const char* vi_tri) : trangthai(trang_thai) {
         strcpy(vitri,vi_tri);
         strcpy(masach,ma_sach);
     };
-    DanhMucSach(const char* ma_sach,int trang_thai,const char* vi_tri) : trangthai(trang_thai), next(nullptr) {
-        strcpy(vitri,vi_tri);
-        strcpy(masach,ma_sach);
-    };
-    DanhMucSach() : trangthai(-1), next(nullptr) {
+    DanhMucSach() : trangthai(-1) {
         strcpy(vitri,"");
         strcpy(masach,"");
     };
@@ -150,7 +146,7 @@ void TaoMaSach(char* ma_sach ,int dem_sach, char* vi_tri){
     vi_tri[0] = khu_vuc;
 
     int day = (dem_sach % 1000) / 100 + 1; // day 1 den 100
-    vi_tri[1] = day;
+    vi_tri[1] ='0' + day;
     int ID_sach = dem_sach % 100 ; // ID sach trong day
 
     snprintf(ma_sach,10, "%c%d-%03d", khu_vuc, day, ID_sach);// A1-001 , B8-026,...
@@ -176,7 +172,7 @@ void ThemDauSach(DanhSachDauSach &danh_sach_dau_sach,const char* I_S_B_N,const c
         cout<<"Day sach";
         return;
     };
-    //tao danh muc sach co ma sach > 0 (demsach mac dinh = 0)
+    
     DanhMucSach* danh_muc_sach = ThemDanhMucSach(head_dms,trang_thai,danh_sach_dau_sach.demsach);
 
 
@@ -203,33 +199,64 @@ void ThemDauSach(DanhSachDauSach &danh_sach_dau_sach,const char* I_S_B_N,const c
     danh_sach_dau_sach.demsach++;
 }
 
+DanhSachDauSach SaoChepDanhSach(DanhSachDauSach &original) {
+    DanhSachDauSach copy;
+    copy.demsach = original.demsach;
+
+    for (int i = 0; i < original.demsach; i++) {
+        DauSach* original_dau_sach = original.node[i];
+        // Tạo một bản sao của DauSach
+        DauSach* new_dau_sach = new DauSach(
+            original_dau_sach->ISBN,
+            original_dau_sach->tensach,
+            original_dau_sach->sotrang,
+            original_dau_sach->tacgia,
+            original_dau_sach->theloai,
+            original_dau_sach->dms 
+        );
+        copy.node[i] = new_dau_sach;
+    }
+
+    return copy;
+}
+
 //Su dung tham chieu nen phai tao ban sao roi xoa ban sao
 void InTheoTungTheLoai(DanhSachDauSach &danh_sach_dau_sach){
+
+    DanhSachDauSach copy = SaoChepDanhSach(danh_sach_dau_sach);
+
     //Su dung thuat toan bubble sort de sap xep va in, khong dung tham chieu
-    for (int i = 0; i < danh_sach_dau_sach.demsach - 1 ; i++){
-        for (int j =0 ; j < danh_sach_dau_sach.demsach - i - 1 ; j++){
+    for (int i = 0; i < copy.demsach - 1 ; i++){
+        for (int j =0 ; j < copy.demsach - i - 1 ; j++){
             //sap xep theo the loai truoc
-            if (strcmp(danh_sach_dau_sach.node[j]->theloai,danh_sach_dau_sach.node[j+1]->theloai) > 0 ){
-                DauSach* temp = danh_sach_dau_sach.node[j];
-                danh_sach_dau_sach.node[j] = danh_sach_dau_sach.node[j+1];
-                danh_sach_dau_sach.node[j+1] = temp;
+            if (strcmp(copy.node[j]->theloai,copy.node[j+1]->theloai) > 0 ){
+                DauSach* temp = copy.node[j];
+                copy.node[j] = copy.node[j+1];
+                copy.node[j+1] = temp;
             }//sap xep theo ten sach neu cung the loai
-            else if (strcmp(danh_sach_dau_sach.node[j]->theloai,danh_sach_dau_sach.node[j+1]->theloai) == 0
-                    && strcmp(danh_sach_dau_sach.node[j]->tensach,danh_sach_dau_sach.node[j+1]->tensach) > 0) {
-                DauSach* temp = danh_sach_dau_sach.node[j];
-                danh_sach_dau_sach.node[j] = danh_sach_dau_sach.node[j+1];
-                danh_sach_dau_sach.node[j+1] = temp;
+            else if (strcmp(copy.node[j]->theloai,copy.node[j+1]->theloai) == 0
+                    && strcmp(copy.node[j]->tensach,copy.node[j+1]->tensach) > 0) {
+                DauSach* temp = copy.node[j];
+                copy.node[j] = copy.node[j+1];
+                copy.node[j+1] = temp;
             }
         }
     };
 
     //in danh sach dau sach
-    for (int i = 0; i < danh_sach_dau_sach.demsach; i++){
+    for (int i = 0; i < copy.demsach; i++){
 
-        cout<<"The loai : "<< danh_sach_dau_sach.node[i]->theloai<<"\n";
-        cout<<"Ten sach : "<< danh_sach_dau_sach.node[i]->tensach<<"\n";
+        cout<<"The loai : "<< copy.node[i]->theloai<<"\n";
+        cout<<"Ten sach : "<< copy.node[i]->tensach<<"\n";
+        cout<<"Ma Sach : "<<copy.node[i]->dms->masach<<"\n";
+        cout<<"Vi Tri : "<<copy.node[i]->dms->vitri<<"\n";
 
     }
+
+    for (int i = 0; i < copy.demsach; i++) {
+        delete copy.node[i]; 
+    }
+
 }
 
 void NhapDauSachMoi(DanhSachDauSach &danh_sach_dau_sach, 
