@@ -1,22 +1,25 @@
 #include <iostream> 
 #include <cstring>
-#define MAXSACH 1000
+#define MAXSACH 10000
 
 using namespace std;
 
 struct DanhMucSach {
-    int masach;
+    char masach[10];
     int trangthai;
     char vitri[10];
     DanhMucSach* next;
-    DanhMucSach(int ma_sach,int trang_thai,const char* vi_tri, DanhMucSach* ptr_dms_next) : masach(ma_sach), trangthai(trang_thai), next(ptr_dms_next) {
+    DanhMucSach(const char* ma_sach,int trang_thai,const char* vi_tri, DanhMucSach* ptr_dms_next) : trangthai(trang_thai), next(ptr_dms_next) {
         strcpy(vitri,vi_tri);
+        strcpy(masach,ma_sach);
     };
-    DanhMucSach(int ma_sach,int trang_thai,const char* vi_tri) : masach(ma_sach), trangthai(trang_thai), next(nullptr) {
+    DanhMucSach(const char* ma_sach,int trang_thai,const char* vi_tri) : trangthai(trang_thai), next(nullptr) {
         strcpy(vitri,vi_tri);
+        strcpy(masach,ma_sach);
     };
-    DanhMucSach() : masach(-1), trangthai(-1), next(nullptr) {
+    DanhMucSach() : trangthai(-1), next(nullptr) {
         strcpy(vitri,"");
+        strcpy(masach,"");
     };
 };
 
@@ -141,9 +144,20 @@ void LayDayNgauNhien (int *A, int m, int n = 1){
     }
 }
 
-DanhMucSach* ThemDanhMucSach(DanhMucSach* &head_dms,int ma_sach, int trang_thai,const char* vi_tri) {
+void TaoMaSach(char* ma_sach ,int dem_sach){
+    
+    char khu_vuc = 'A' + (dem_sach / 1000);  //moi khu vuc 1000 cuon
+    int day = (dem_sach % 1000) / 100 + 1; // day 1 den 100
+    int ID_sach = dem_sach % 100 ; // ID sach trong day
+
+    sprintf(ma_sach, "%c%d-%d", khu_vuc, day, ID_sach);
+}
+
+DanhMucSach* ThemDanhMucSach(DanhMucSach* &head_dms, int trang_thai,const char* vi_tri,int dem_sach) {
 
     //them vao dau danh sach voi O(1)
+    char ma_sach[10];
+    TaoMaSach(ma_sach,dem_sach);
     DanhMucSach* new_dms = new DanhMucSach(ma_sach,trang_thai,vi_tri);
     new_dms->next=head_dms;
     head_dms = new_dms;
@@ -153,12 +167,13 @@ DanhMucSach* ThemDanhMucSach(DanhMucSach* &head_dms,int ma_sach, int trang_thai,
 //danh sach dau sach tham chieu mang, danh muc sach tham chieu con tro vi lien ket don
 void ThemDauSach(DanhSachDauSach &danh_sach_dau_sach,const char* I_S_B_N,const char* ten_sach,int so_trang,const char* tac_gia,const char* the_loai, 
                 DanhMucSach* &head_dms, int trang_thai,const char* vi_tri){
+    
     if(danh_sach_dau_sach.demsach >= MAXSACH){
         cout<<"Day sach";
         return;
     };
     //tao danh muc sach co ma sach > 0 (demsach mac dinh = 0)
-    DanhMucSach* danh_muc_sach = ThemDanhMucSach(head_dms,danh_sach_dau_sach.demsach+1,trang_thai,vi_tri);
+    DanhMucSach* danh_muc_sach = ThemDanhMucSach(head_dms,trang_thai,vi_tri,danh_sach_dau_sach.demsach);
 
 
     int n = danh_sach_dau_sach.demsach;
