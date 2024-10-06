@@ -1,38 +1,30 @@
 #include <iostream> 
 #include <cstring>
+#include <string>
 #define MAXSACH 10000
 #define MAXKHUVUC 10 // 10 khu vuc tu A - J
 #define MAXDAY 1000 // 1 day la 1000 cuon sach
 using namespace std;
 
 struct DanhMucSach {
-    char masach[10];
+    string masach;
     int trangthai;
-    char vitri[10];
+    string vitri;
     DanhMucSach* next= nullptr;
-    DanhMucSach(const char* ma_sach,int trang_thai,const char* vi_tri) : trangthai(trang_thai) {
-        strcpy(vitri,vi_tri);
-        strcpy(masach,ma_sach);
-    };
-    DanhMucSach() : trangthai(-1) {
-        strcpy(vitri,"");
-        strcpy(masach,"");
-    };
+    DanhMucSach(const string &ma_sach, int trang_thai, const string &vi_tri) 
+        : masach(ma_sach), trangthai(trang_thai), vitri(vi_tri) {}
+    DanhMucSach() : masach(""), trangthai(0), vitri("") {};
 };
 
 struct DauSach {
-    char ISBN[20];
-    char tensach[50];
+    string ISBN;
+    string tensach;
     int sotrang;
-    char tacgia[50];
-    char theloai[50];
+    string tacgia;
+    string theloai;
     DanhMucSach* dms = nullptr;
-    DauSach(const char* I_S_B_N,const char* ten_sach,int so_trang,const char* tac_gia,const char* the_loai, DanhMucSach* ptr_dms) :sotrang(so_trang), dms(ptr_dms) {
-        strcpy(ISBN,I_S_B_N);
-        strcpy(tensach,ten_sach);
-        strcpy(tacgia,tac_gia);
-        strcpy(theloai,the_loai);
-    }
+     DauSach(const string& I_S_B_N, const string& ten_sach, int so_trang,const string& tac_gia, const string& the_loai, DanhMucSach* ptr_dms)
+        : ISBN(I_S_B_N), tensach(ten_sach), sotrang(so_trang), tacgia(tac_gia), theloai(the_loai), dms(ptr_dms) {}
 };
 
 struct DanhSachDauSach{
@@ -42,16 +34,16 @@ struct DanhSachDauSach{
 
 struct MUONTRA {
     int masach;
-    char ngaymuon[10];
-    char ngaytra[10];
+    string ngaymuon[10];
+    string ngaytra[10];
     int vitri;
     MUONTRA* next = nullptr;
 };
 
 struct The_Doc_Gia {
     unsigned int MATHE;
-    char ho[10];
-    char ten[10];
+    string ho[10];
+    string ten[10];
     enum phai{Nam, Nu};
     enum trang_thai_cua_the{Khoa=0, Dang_Hoat_Dong=1};
     DauSach* head_lsms = nullptr;
@@ -141,22 +133,23 @@ void LayDayNgauNhien (int *A, int m, int n = 1){
     }
 }
 
-void TaoMaSach(char* ma_sach ,int dem_sach, char* vi_tri){
-    char khu_vuc = 'A' + (dem_sach / 1000);
-    vi_tri[0] = khu_vuc;
+void TaoMaSach(string& ma_sach ,int dem_sach, string& vi_tri){
+    string khu_vuc = 'A' + to_string(dem_sach / 1000);
+    vi_tri = khu_vuc;
 
     int day = (dem_sach % 1000) / 100 + 1; // day 1 den 100
-    vi_tri[1] ='0' + day;
+    vi_tri += to_string(day);
+
     int ID_sach = dem_sach % 100 ; // ID sach trong day
 
-    snprintf(ma_sach,10, "%c%d-%03d", khu_vuc, day, ID_sach);// A1-001 , B8-026,...
+    ma_sach = khu_vuc + to_string(day) + "-" + to_string(ID_sach);
 }
 
 DanhMucSach* ThemDanhMucSach(DanhMucSach* &head_dms, int trang_thai,int dem_sach) {
 
     //them vao dau danh sach voi O(1)
-    char ma_sach[10];
-    char vi_tri[10];
+    string ma_sach;
+    string vi_tri;
     TaoMaSach(ma_sach,dem_sach,vi_tri);
     DanhMucSach* new_dms = new DanhMucSach(ma_sach,trang_thai,vi_tri);
     new_dms->next=head_dms;
@@ -165,7 +158,7 @@ DanhMucSach* ThemDanhMucSach(DanhMucSach* &head_dms, int trang_thai,int dem_sach
 };
 
 //danh sach dau sach tham chieu mang, danh muc sach tham chieu con tro vi lien ket don
-void ThemDauSach(DanhSachDauSach &danh_sach_dau_sach,const char* I_S_B_N,const char* ten_sach,int so_trang,const char* tac_gia,const char* the_loai, 
+void ThemDauSach(DanhSachDauSach &danh_sach_dau_sach,const string& I_S_B_N,const string& ten_sach,int so_trang,const string& tac_gia,const string& the_loai, 
                 DanhMucSach* &head_dms, int trang_thai){
     
     if(danh_sach_dau_sach.demsach >= MAXSACH){
@@ -184,8 +177,9 @@ void ThemDauSach(DanhSachDauSach &danh_sach_dau_sach,const char* I_S_B_N,const c
     int vi_tri_them = n;
     //xac dinh vi tri chen
     for (int i = 0; i < n ; i++){
-        if (strcmp(ten_sach,danh_sach_dau_sach.node[i]->tensach) < 0){
+        if (ten_sach < danh_sach_dau_sach.node[i]->tensach){
             vi_tri_them = i;
+            break;
         }
     }
 
@@ -229,13 +223,13 @@ void InTheoTungTheLoai(DanhSachDauSach &danh_sach_dau_sach){
     for (int i = 0; i < copy.demsach - 1 ; i++){
         for (int j =0 ; j < copy.demsach - i - 1 ; j++){
             //sap xep theo the loai truoc
-            if (strcmp(copy.node[j]->theloai,copy.node[j+1]->theloai) > 0 ){
+            if (copy.node[j]->theloai > copy.node[j+1]->theloai ){
                 DauSach* temp = copy.node[j];
                 copy.node[j] = copy.node[j+1];
                 copy.node[j+1] = temp;
             }//sap xep theo ten sach neu cung the loai
-            else if (strcmp(copy.node[j]->theloai,copy.node[j+1]->theloai) == 0
-                    && strcmp(copy.node[j]->tensach,copy.node[j+1]->tensach) > 0) {
+            else if (copy.node[j]->theloai == copy.node[j+1]->theloai
+                    && copy.node[j]->tensach > copy.node[j+1]->tensach) {
                 DauSach* temp = copy.node[j];
                 copy.node[j] = copy.node[j+1];
                 copy.node[j+1] = temp;
@@ -261,8 +255,8 @@ void InTheoTungTheLoai(DanhSachDauSach &danh_sach_dau_sach){
 
 void NhapDauSachMoi(DanhSachDauSach &danh_sach_dau_sach, 
                     DanhMucSach* &head_dms){
-    char I_S_B_N[20];char ten_sach[50];int so_trang;char tac_gia[50];char the_loai[50];
-    int trang_thai; char vi_tri[10];
+    string I_S_B_N;string ten_sach;int so_trang;string tac_gia;string the_loai;
+    int trang_thai; string vi_tri;
     cout<<"Nhap ISBN cua sach : \n";
     cin>>I_S_B_N;
     cout<<"Nhap ten sach : \n";
