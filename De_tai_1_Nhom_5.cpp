@@ -1,6 +1,7 @@
 #include <iostream> 
 #include <cstring>
 #include <string>
+#include <fstream>
 #define MAXSACH 10000
 #define MAXKHUVUC 10 // 10 khu vuc tu A - J
 #define MAXDAY 1000 // 1 day la 1000 cuon sach
@@ -257,23 +258,26 @@ void NhapDauSachMoi(DanhSachDauSach &danh_sach_dau_sach,
                     DanhMucSach* &head_dms){
     string I_S_B_N;string ten_sach;int so_trang;string tac_gia;string the_loai;
     int trang_thai; string vi_tri;
-    cout<<"Nhap ISBN cua sach : \n";
-    cin>>I_S_B_N;
-    cout<<"Nhap ten sach : \n";
-    cin>>ten_sach;
-    cout<<"Nhap so trang : \n";
-    cin>>so_trang;
-    cout<<"Nhap tac gia : \n";
-    cin>>tac_gia;
-    cout<<"Nhap the loai : \n";
-    cin>>the_loai;
-    cout<<"Nhap trang thai : \n";
-    cin>>trang_thai;
-    cout<<"Nhap vi tri : \n";
-    cin>>vi_tri;
+    
+     cout << "Nhap ISBN cua sach: \n";
+    getline(cin, I_S_B_N);
+    
+    cout << "Nhap ten sach: \n";
+    getline(cin, ten_sach);
+
+    cout << "Nhap so trang: \n";
+    cin >> so_trang;
+    cin.ignore();  
+
+    cout << "Nhap tac gia: \n";
+    getline(cin, tac_gia);
+
+    cout << "Nhap the loai: \n";
+    getline(cin, the_loai);
+
 
     ThemDauSach(danh_sach_dau_sach,I_S_B_N,ten_sach,so_trang, tac_gia, the_loai, 
-                head_dms, trang_thai);
+                head_dms, 0);
 }
 
 
@@ -282,7 +286,44 @@ void MUONSACH () {
     
 }
 
+void DocTuFile(DanhSachDauSach &danh_sach_dau_sach, DanhMucSach* &head_dms) {
+    ifstream file("Dau_sach.txt");
+    if (!file.is_open()) {
+        cout << "Khong the mo file!" << endl;
+        return;
+    }
 
+    string line;
+    while (getline(file, line)) {
+        string ISBN, tensach, tacgia, theloai, vitri;
+        int sotrang;
+
+        // Tách thông tin từ dòng
+        int pos = 0; // Sử dụng int thay vì size_t
+        pos = line.find('|');
+        ISBN = line.substr(0, pos); line.erase(0, pos + 1);
+
+        pos = line.find('|');
+        tensach = line.substr(0, pos); line.erase(0, pos + 1);
+
+        pos = line.find('|');
+        sotrang = stoi(line.substr(0, pos)); line.erase(0, pos + 1);
+
+        pos = line.find('|');
+        tacgia = line.substr(0, pos); line.erase(0, pos + 1);
+
+        pos = line.find('|');
+        theloai = line.substr(0, pos); line.erase(0, pos + 1);
+
+        pos = line.find('|');
+        vitri = line.substr(0, pos); line.erase(0, pos + 1);
+
+        // Gọi hàm thêm sách vào danh sách
+        ThemDauSach(danh_sach_dau_sach, ISBN, tensach, sotrang, tacgia, theloai, head_dms, 0);
+    }
+
+    file.close();
+}
 
 int main() {
     enum dayofWeeks{Monday = 0, Tweday};
@@ -290,7 +331,6 @@ int main() {
 
     DanhSachDauSach danh_sach_dau_sach;
     DanhMucSach* danh_muc_sach = nullptr;
-
     ThemDauSach(danh_sach_dau_sach,"978-0-306-40615-7","Cho Tai Ngu", 154,"Tai cho dien","Ao Tuong",danh_muc_sach,0);
     ThemDauSach(danh_sach_dau_sach,"978-1-4028-9462-6","Cho Kien Ngu", 844,"Kien cho dien","Ao Tuong",danh_muc_sach,0);
     ThemDauSach(danh_sach_dau_sach,"978-0-14-312854-0","Bao dep zai", 1004,"Bao Hoang","Hien Thuc",danh_muc_sach,0);
