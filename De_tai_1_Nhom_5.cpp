@@ -178,7 +178,7 @@ void ThemDauSach(DanhSachDauSach &danh_sach_dau_sach,const string& I_S_B_N,const
     int vi_tri_them = n;
     //xac dinh vi tri chen
     for (int i = 0; i < n ; i++){
-        if (ten_sach < danh_sach_dau_sach.node[i]->tensach){
+        if (ten_sach <= danh_sach_dau_sach.node[i]->tensach){
             vi_tri_them = i;
             break;
         }
@@ -254,6 +254,7 @@ void InTheoTungTheLoai(DanhSachDauSach &danh_sach_dau_sach){
 
 }
 
+
 void NhapDauSachMoi(DanhSachDauSach &danh_sach_dau_sach, 
                     DanhMucSach* &head_dms){
     string I_S_B_N;string ten_sach;int so_trang;string tac_gia;string the_loai;
@@ -287,7 +288,7 @@ void MUONSACH () {
 }
 
 void DocTuFile(DanhSachDauSach &danh_sach_dau_sach, DanhMucSach* &head_dms) {
-    ifstream file("Dau_sach.txt");
+    fstream file("Dau_sach.txt");
     if (!file.is_open()) {
         cout << "Khong the mo file!" << endl;
         return;
@@ -298,8 +299,8 @@ void DocTuFile(DanhSachDauSach &danh_sach_dau_sach, DanhMucSach* &head_dms) {
         string ISBN, tensach, tacgia, theloai, vitri;
         int sotrang;
 
-        // Tách thông tin từ dòng
-        int pos = 0; // Sử dụng int thay vì size_t
+        // tach thong tin tung dong
+        size_t pos = 0; 
         pos = line.find('|');
         ISBN = line.substr(0, pos); line.erase(0, pos + 1);
 
@@ -331,9 +332,7 @@ int main() {
 
     DanhSachDauSach danh_sach_dau_sach;
     DanhMucSach* danh_muc_sach = nullptr;
-    ThemDauSach(danh_sach_dau_sach,"978-0-306-40615-7","Cho Tai Ngu", 154,"Tai cho dien","Ao Tuong",danh_muc_sach,0);
-    ThemDauSach(danh_sach_dau_sach,"978-1-4028-9462-6","Cho Kien Ngu", 844,"Kien cho dien","Ao Tuong",danh_muc_sach,0);
-    ThemDauSach(danh_sach_dau_sach,"978-0-14-312854-0","Bao dep zai", 1004,"Bao Hoang","Hien Thuc",danh_muc_sach,0);
+    DocTuFile(danh_sach_dau_sach,danh_muc_sach);
 
     InTheoTungTheLoai(danh_sach_dau_sach);
 }
