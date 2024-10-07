@@ -136,7 +136,7 @@ void LayDayNgauNhien (int *A, int m, int n = 1){
 }
 
 void TaoMaSach(string& ma_sach ,int dem_sach, string& vi_tri){
-    int day = (dem_sach % 1000) / 100 + 1; // day 1 den 100
+    int day = (dem_sach % 1000) / 100 ; // day 1 den 100
     vi_tri += to_string(day);
 
     int ID_sach = dem_sach % 100 ; // ID sach trong day
