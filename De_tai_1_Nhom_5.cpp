@@ -301,7 +301,7 @@ void MUONSACH () {
 }
 
 void DocTuFile(DanhSachDauSach &danh_sach_dau_sach, DanhMucSach* &head_dms) {
-    fstream file("Dau_sach.txt");
+    fstream file("Danh_sach_dau_sach.txt");
     if (!file.is_open()) {
         cout << "Khong the mo file!" << endl;
         return;
