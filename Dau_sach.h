@@ -2,6 +2,7 @@
 #include <cstring>
 #include <string>
 #include <fstream>
+#include <conio.h>//_getch
 #define MAXSACH 10000
 using namespace std;
 
@@ -128,45 +129,25 @@ void InTheoTungTheLoai(DanhSachDauSach &danh_sach_dau_sach){
     DanhSachDauSach copy = SaoChepDanhSach(danh_sach_dau_sach);
 
     //Su dung thuat toan bubble sort de sap xep va in, khong dung tham chieu
-    // for (int i = 0; i < copy.demsach - 1 ; i++){
-    //     for (int j =0 ; j < copy.demsach - i - 1 ; j++){
-    //         //sap xep theo the loai truoc
-    //         if (copy.node[j]->theloai > copy.node[j+1]->theloai ){
-    //             DauSach* temp = copy.node[j];
-    //             copy.node[j] = copy.node[j+1];
-    //             copy.node[j+1] = temp;
-    //         }//sap xep theo ten sach neu cung the loai
-    //         else if (copy.node[j]->theloai == copy.node[j+1]->theloai
-    //                 && copy.node[j]->tensach > copy.node[j+1]->tensach) {
-    //             DauSach* temp = copy.node[j];
-    //             copy.node[j] = copy.node[j+1];
-    //             copy.node[j+1] = temp;
-    //         }
-    //     }
-    // };
-
-    for (int i = 0; i < copy.demsach - 1 ; i++){
-        for (int j =0 ; j < copy.demsach - i - 1 ; j++){
-    
-            if (copy.node[j]->dms->masach > copy.node[j+1]->dms->masach ){
+   	int so_luong_sach = copy.demsach;
+   	//sap xep theo the loai
+   	for (int i = 0; i < so_luong_sach - 1; i++) {
+        for (int j = 0; j < so_luong_sach -  i - 1; j++) {
+            if (copy.node[j]->theloai > copy.node[j + 1]->theloai) {
                 DauSach* temp = copy.node[j];
-                copy.node[j] = copy.node[j+1];
-                copy.node[j+1] = temp;
+	            copy.node[j] = copy.node[j+1];
+	            copy.node[j+1] = temp;
+            }	//sap xep theo ten sach trong the loai
+            else if (copy.node[j]->theloai ==copy.node[j + 1]->theloai && copy.node[j]->tensach > copy.node[j + 1]->tensach) {
+                DauSach* temp = copy.node[j];
+	            copy.node[j] = copy.node[j+1];
+	            copy.node[j+1] = temp;
             }
-        };
-    };
-
+        }
+    }
     //in danh sach dau sach
     for (int i = 0; i < copy.demsach; i++){
-        // cout<<"ISBN : "<<copy.node[i]->ISBN<<"\n";
-        // cout<<"Ten sach : "<< copy.node[i]->tensach<<"\n";
-        // cout<<"So trang : "<< copy.node[i]->sotrang<<"\n";
-        // cout<<"Tac gia : "<< copy.node[i]->tacgia<<"\n";
-        // cout<<"Nam san xuat : "<< copy.node[i]->namsx<<"\n";
-        // cout<<"The loai : "<< copy.node[i]->theloai<<"\n";
-        cout<<"Ma Sach : "<<copy.node[i]->dms->masach<<"\n";
-        cout<<"Vi Tri : "<<copy.node[i]->dms->vitri<<"\n\n";
-
+	    cout<<"The loai : "<< copy.node[i]->theloai<<" | Ten sach : "<< copy.node[i]->tensach<<"\n";
     }
 
     for (int i = 0; i < copy.demsach; i++) {
@@ -175,6 +156,58 @@ void InTheoTungTheLoai(DanhSachDauSach &danh_sach_dau_sach){
 
 };
 
+int TimKiemNhiPhanTenSach(DanhSachDauSach &danh_sach_dau_sach,string key){
+	int left = 0;
+	int right = danh_sach_dau_sach.demsach-1;
+	int ket_qua = -1;
+	
+	while(left <= right){
+		int mid = (left + right) /2;
+		string tien_to = danh_sach_dau_sach.node[mid]->tensach.substr(0,key.size());
+		
+		if (tien_to == key) {
+            ket_qua = mid; 
+            right = mid - 1;//doi right ve mid de xac dinh vi tri tien to dau tien 
+        } else if (tien_to < key) {//key ben phai
+            left = mid + 1; 
+        } else {//key ben trai
+            right = mid - 1; 
+        }
+	}
+	return ket_qua;
+	
+}
+
+void TimKiemTenSach(DanhSachDauSach &danh_sach_dau_sach){
+    string key;
+    char c;
+
+    cout<<"Nhap ten sach : ";
+    while (true){
+        c = _getch(); // lay ki tu khong dung enter
+
+        if (c == 13) { // enter de dung
+            break;
+        } else if (c == '\b') { // phim backspace
+            if (!key.empty()) {
+                key.pop_back(); // Xoa ky tu cuoi
+            }
+        } else if (isprint(c)) { 
+            key += c;
+        }
+        
+   		system("cls");
+		cout<<"Nhap ten sach : "<<key<<endl;
+		
+		int vi_tri_dau_tien = TimKiemNhiPhanTenSach(danh_sach_dau_sach,key);
+		
+        if (!key.empty()){
+			for (int i = vi_tri_dau_tien; i <danh_sach_dau_sach.demsach && danh_sach_dau_sach.node[i]->tensach.substr(0,key.size()) == key;i++ ){
+					cout << "- " << danh_sach_dau_sach.node[i]->tensach <<endl;
+			}
+		}
+	} 
+}
 
 bool KiemTraDaySachKV(DanhSachDauSach &danh_sach_dau_sach,string vi_tri){
     int Khu_vuc = vi_tri[0] - 'A'; // khu A : 0 , B : 1 , ...,J : 9
@@ -227,10 +260,24 @@ void NhapDauSachMoi(DanhSachDauSach &danh_sach_dau_sach,
 
     ThemDauSach(danh_sach_dau_sach,I_S_B_N,ten_sach,so_trang, tac_gia,nam_sx, the_loai, 
                 head_dms, 0,vi_tri);
+    //ghi vao file
+    ofstream file("Danh_sach_dau_sach.txt", ios::app); // Mo file che do append
+    if (file.is_open()) {
+        file << I_S_B_N << '|'
+             << ten_sach << '|'
+             << so_trang << '|'
+             << tac_gia << '|'
+             << nam_sx << '|'
+             << the_loai << '|'
+             << vi_tri << endl; 
+        file.close(); 
+    } else {
+        cout << "Khong the mo file de ghi!" << endl;
+    }
 }
 
 void DocTuFile(DanhSachDauSach &danh_sach_dau_sach, DanhMucSach* &head_dms) {
-    fstream file("Danh_sach_dau_sach.txt");
+    ifstream file("Danh_sach_dau_sach.txt");
     if (!file.is_open()) {
         cout << "Khong the mo file!" << endl;
         return;
