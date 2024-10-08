@@ -23,30 +23,41 @@ struct DauSach {
     int namsx;
     string theloai;
     DanhMucSach* dms = nullptr;
-     DauSach(const string& I_S_B_N, const string& ten_sach, int so_trang,const string& tac_gia,int nam_sx, const string& the_loai, DanhMucSach* ptr_dms)
+    DauSach(const string& I_S_B_N, const string& ten_sach, int so_trang,const string& tac_gia,int nam_sx, const string& the_loai, DanhMucSach* ptr_dms)
         : ISBN(I_S_B_N), tensach(ten_sach), sotrang(so_trang), tacgia(tac_gia),namsx(nam_sx), theloai(the_loai), dms(ptr_dms) {}
 };
 
 struct DanhSachDauSach{
     int demsach= 0;
-    DauSach* node[MAXSACH];     
+    DauSach* node[MAXSACH];    
+    int Masach[10][10][100]; 
+    int SodaytrongKhuvuc[10] = {0};
+    int Sosachtrongday[10][10] ={{0}};
 };
 
 
-void TaoMaSach(string& ma_sach ,int dem_sach, string& vi_tri){
-    int day = (dem_sach % 1000) / 100 ; // day 1 den 100
+void TaoMaSach(string& ma_sach ,DanhSachDauSach &danh_sach_dau_sach, string& vi_tri){
+    int Khu_vuc = vi_tri[0] - 'A'; // khu A : 0 , B : 1 , ...
+    int day = danh_sach_dau_sach.SodaytrongKhuvuc[Khu_vuc];
+    
+    if(danh_sach_dau_sach.Sosachtrongday[Khu_vuc][day] > 99) {
+        danh_sach_dau_sach.SodaytrongKhuvuc[Khu_vuc]++;//neu da co 100 cuon sach thi tang len day tiep theo
+        day++;
+    };
+    
+    
+    int so_sach = danh_sach_dau_sach.Sosachtrongday[Khu_vuc][day];
     vi_tri += to_string(day);
+    ma_sach = vi_tri + "-" + to_string(danh_sach_dau_sach.Sosachtrongday[Khu_vuc][day]);
 
-    int ID_sach = dem_sach % 100 ; // ID sach trong day
+    danh_sach_dau_sach.Sosachtrongday[Khu_vuc][day]++;
+};
 
-    ma_sach = vi_tri + "-" + to_string(ID_sach);
-}
-
-DanhMucSach* ThemDanhMucSach(DanhMucSach* &head_dms, int trang_thai,int dem_sach, string& vi_tri) {
+DanhMucSach* ThemDanhMucSach(DanhMucSach* &head_dms, int trang_thai,DanhSachDauSach &danh_sach_dau_sach, string& vi_tri) {
 
     //them vao dau danh sach voi O(1)
     string ma_sach;
-    TaoMaSach(ma_sach,dem_sach,vi_tri);
+    TaoMaSach(ma_sach,danh_sach_dau_sach,vi_tri);
     DanhMucSach* new_dms = new DanhMucSach(ma_sach,trang_thai,vi_tri);
     new_dms->next=head_dms;
     head_dms = new_dms;
@@ -62,7 +73,7 @@ void ThemDauSach(DanhSachDauSach &danh_sach_dau_sach,const string& I_S_B_N,const
         return;
     };
     
-    DanhMucSach* danh_muc_sach = ThemDanhMucSach(head_dms,trang_thai,danh_sach_dau_sach.demsach,vi_tri);
+    DanhMucSach* danh_muc_sach = ThemDanhMucSach(head_dms,trang_thai,danh_sach_dau_sach,vi_tri);
 
 
     int n = danh_sach_dau_sach.demsach;
@@ -89,13 +100,13 @@ void ThemDauSach(DanhSachDauSach &danh_sach_dau_sach,const string& I_S_B_N,const
     danh_sach_dau_sach.demsach++;
 }
 
-DanhSachDauSach SaoChepDanhSach(DanhSachDauSach &original) {
+DanhSachDauSach SaoChepDanhSach(DanhSachDauSach &Dau_sach_goc) {
     DanhSachDauSach copy;
-    copy.demsach = original.demsach;
+    copy.demsach = Dau_sach_goc.demsach;
 
-    for (int i = 0; i < original.demsach; i++) {
-        DauSach* original_dau_sach = original.node[i];
-        // Tạo một bản sao của DauSach
+    for (int i = 0; i < Dau_sach_goc.demsach; i++) {
+        DauSach* original_dau_sach = Dau_sach_goc.node[i];
+        // Tạo một bản sao của DauSach goc voi pointer chỏ vao cung bo nho voi Dau sach goc
         DauSach* new_dau_sach = new DauSach(
             original_dau_sach->ISBN,
             original_dau_sach->tensach,
@@ -134,14 +145,25 @@ void InTheoTungTheLoai(DanhSachDauSach &danh_sach_dau_sach){
     //     }
     // };
 
+    for (int i = 0; i < copy.demsach - 1 ; i++){
+        for (int j =0 ; j < copy.demsach - i - 1 ; j++){
+    
+            if (copy.node[j]->dms->masach > copy.node[j+1]->dms->masach ){
+                DauSach* temp = copy.node[j];
+                copy.node[j] = copy.node[j+1];
+                copy.node[j+1] = temp;
+            }
+        };
+    };
+
     //in danh sach dau sach
     for (int i = 0; i < copy.demsach; i++){
-        cout<<"ISBN : "<<copy.node[i]->ISBN<<"\n";
-        cout<<"Ten sach : "<< copy.node[i]->tensach<<"\n";
-        cout<<"So trang : "<< copy.node[i]->sotrang<<"\n";
-        cout<<"Tac gia : "<< copy.node[i]->tacgia<<"\n";
-        cout<<"Nam san xuat : "<< copy.node[i]->namsx<<"\n";
-        cout<<"The loai : "<< copy.node[i]->theloai<<"\n";
+        // cout<<"ISBN : "<<copy.node[i]->ISBN<<"\n";
+        // cout<<"Ten sach : "<< copy.node[i]->tensach<<"\n";
+        // cout<<"So trang : "<< copy.node[i]->sotrang<<"\n";
+        // cout<<"Tac gia : "<< copy.node[i]->tacgia<<"\n";
+        // cout<<"Nam san xuat : "<< copy.node[i]->namsx<<"\n";
+        // cout<<"The loai : "<< copy.node[i]->theloai<<"\n";
         cout<<"Ma Sach : "<<copy.node[i]->dms->masach<<"\n";
         cout<<"Vi Tri : "<<copy.node[i]->dms->vitri<<"\n\n";
 
@@ -151,8 +173,18 @@ void InTheoTungTheLoai(DanhSachDauSach &danh_sach_dau_sach){
         delete copy.node[i]; 
     }
 
-}
+};
 
+
+bool KiemTraDaySachKV(DanhSachDauSach &danh_sach_dau_sach,string vi_tri){
+    int Khu_vuc = vi_tri[0] - 'A'; // khu A : 0 , B : 1 , ...,J : 9
+    int day = danh_sach_dau_sach.SodaytrongKhuvuc[Khu_vuc];
+    int so_sach = danh_sach_dau_sach.Sosachtrongday[Khu_vuc][day];
+    if (day == 9 && so_sach > 99){
+        cout<<"So sach trong vi tri : "<<vi_tri<< " da day, vui long nhap lai.\n";
+        return true;
+    }else{return false;};
+};
 
 void NhapDauSachMoi(DanhSachDauSach &danh_sach_dau_sach, 
                     DanhMucSach* &head_dms){
@@ -179,14 +211,19 @@ void NhapDauSachMoi(DanhSachDauSach &danh_sach_dau_sach,
     cout << "Nhap the loai: \n";
     getline(cin, the_loai);
 
-    cout << "Nhap khu vuc (A - J): \n";
-    getline(cin, vi_tri); // Nhập khu vực từ A đến J
+    do{
+        bool k_hop_le = true;
+        do{
+            cout << "Nhap vi tri (A - J): \n";
+            getline(cin, vi_tri); 
+            
+            if (vi_tri < "A" || vi_tri > "J") {
+                cout << "vi tri khong hop le. Vui long nhap tu A den J." << endl;
+                k_hop_le = false;
+            }
+        }while(!k_hop_le);
 
-    // Kiểm tra khu vực hợp lệ
-    if (vi_tri < "A" || vi_tri > "J") {
-        cout << "Khu vuc khong hop le. Vui long nhap tu A den J." << endl;
-        return;
-    }
+    }while(KiemTraDaySachKV(danh_sach_dau_sach,vi_tri));
 
     ThemDauSach(danh_sach_dau_sach,I_S_B_N,ten_sach,so_trang, tac_gia,nam_sx, the_loai, 
                 head_dms, 0,vi_tri);
@@ -226,6 +263,10 @@ void DocTuFile(DanhSachDauSach &danh_sach_dau_sach, DanhMucSach* &head_dms) {
 
         pos = line.find('|');
         vitri = line.substr(0, pos); line.erase(0, pos + 1);
+
+        if (ISBN.empty() || tensach.empty() || tacgia.empty() || theloai.empty() || vitri.empty()) {
+            continue; 
+        }
 
         ThemDauSach(danh_sach_dau_sach, ISBN, tensach, sotrang, tacgia,namsx, theloai, head_dms, 0,vitri);
     }
