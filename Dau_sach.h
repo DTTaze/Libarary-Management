@@ -123,38 +123,6 @@ DanhSachDauSach SaoChepDanhSach(DanhSachDauSach &Dau_sach_goc) {
     return copy;
 }
 
-//Su dung tham chieu nen phai tao ban sao roi xoa ban sao
-void InTheoTungTheLoai(DanhSachDauSach &danh_sach_dau_sach){
-
-    DanhSachDauSach copy = SaoChepDanhSach(danh_sach_dau_sach);
-
-    //Su dung thuat toan bubble sort de sap xep va in, khong dung tham chieu
-   	int so_luong_sach = copy.demsach;
-   	//sap xep theo the loai
-   	for (int i = 0; i < so_luong_sach - 1; i++) {
-        for (int j = 0; j < so_luong_sach -  i - 1; j++) {
-            if (copy.node[j]->theloai > copy.node[j + 1]->theloai) {
-                DauSach* temp = copy.node[j];
-	            copy.node[j] = copy.node[j+1];
-	            copy.node[j+1] = temp;
-            }	//sap xep theo ten sach trong the loai
-            else if (copy.node[j]->theloai ==copy.node[j + 1]->theloai && copy.node[j]->tensach > copy.node[j + 1]->tensach) {
-                DauSach* temp = copy.node[j];
-	            copy.node[j] = copy.node[j+1];
-	            copy.node[j+1] = temp;
-            }
-        }
-    }
-    //in danh sach dau sach
-    for (int i = 0; i < copy.demsach; i++){
-	    cout<<"The loai : "<< copy.node[i]->theloai<<" | Ten sach : "<< copy.node[i]->tensach<<"\n";
-    }
-
-    for (int i = 0; i < copy.demsach; i++) {
-        delete copy.node[i]; 
-    }
-
-};
 
 int TimKiemNhiPhanTenSach(DanhSachDauSach &danh_sach_dau_sach,string key){
 	int left = 0;
@@ -174,9 +142,67 @@ int TimKiemNhiPhanTenSach(DanhSachDauSach &danh_sach_dau_sach,string key){
             right = mid - 1; 
         }
 	}
-	return ket_qua;
-	
+	return ket_qua;	
 }
+
+int TimKiemNhiPhanTheLoai(DanhSachDauSach &danh_sach_dau_sach,string key){
+	int left = 0;
+	int right = danh_sach_dau_sach.demsach-1;
+	int ket_qua = -1;
+	
+	while(left <= right){
+		int mid = (left + right) /2;
+		
+		if (danh_sach_dau_sach.node[mid]->theloai == key) {
+            ket_qua = mid; 
+            right = mid - 1;//doi right ve mid de xac dinh vi tri tien to dau tien 
+        } else if (danh_sach_dau_sach.node[mid]->theloai < key) {//key ben phai
+            left = mid + 1; 
+        } else {//key ben trai
+            right = mid - 1; 
+        }
+	}
+	return ket_qua;	
+}
+//Su dung tham chieu nen phai tao ban sao roi xoa ban sao
+void InTheoTungTheLoai(DanhSachDauSach &danh_sach_dau_sach){
+
+    DanhSachDauSach copy = SaoChepDanhSach(danh_sach_dau_sach);
+
+    //Su dung thuat toan bubble sort de sap xep va in, khong dung tham chieu
+    
+   	int so_luong_sach = copy.demsach;
+   	//sap xep theo the loai
+   	for (int i = 0; i < so_luong_sach - 1; i++) {
+        for (int j = 0; j < so_luong_sach -  i - 1; j++) {
+            if (copy.node[j]->theloai > copy.node[j + 1]->theloai) {
+                DauSach* temp = copy.node[j];
+	            copy.node[j] = copy.node[j+1];
+	            copy.node[j+1] = temp;
+            }	//sap xep theo ten sach trong the loai
+            else if (copy.node[j]->theloai ==copy.node[j + 1]->theloai && copy.node[j]->tensach > copy.node[j + 1]->tensach) {
+                DauSach* temp = copy.node[j];
+	            copy.node[j] = copy.node[j+1];
+	            copy.node[j+1] = temp;
+            }
+        }
+    }
+    string key;
+    cout<<"Nhap the loai : ";getline(cin,key);
+    int vi_tri_dau_tien = TimKiemNhiPhanTheLoai(copy,key);
+    
+    if (vi_tri_dau_tien != -1 ){
+	    for (int i = vi_tri_dau_tien; i < copy.demsach && copy.node[i]->theloai == key; i++){
+		    cout<<"The loai : "<< copy.node[i]->theloai<<" | Ten sach : "<< copy.node[i]->tensach<<"\n";
+	
+	    }
+	}
+	
+	for (int i = 0; i < copy.demsach; i++) {
+	    delete copy.node[i]; 
+	}
+};
+
 
 void TimKiemTenSach(DanhSachDauSach &danh_sach_dau_sach){
     string key;
