@@ -63,7 +63,7 @@ DanhMucSach* ThemDanhMucSach(DanhMucSach* &head_dms, int trang_thai,DanhSachDauS
     DanhMucSach* t = nullptr;
     DanhMucSach* s = head_dms;
     for ( ; s != nullptr && new_dms->masach > s->masach; t = s , s = s->next);
-    if (s == nullptr){
+    if (t == nullptr){
         new_dms->next = head_dms;
         head_dms = new_dms;
     }else{
