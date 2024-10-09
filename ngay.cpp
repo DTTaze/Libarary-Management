@@ -113,43 +113,68 @@ Date NgayTraThucTe(){
     return ngay_tra_thuc_te; 
 }
 
+int DemSoNgay(Date ngay_muon, Date ngay_tra) {
+
+    tm ngaymuon = {0}, ngaytra = {0};
+    ngaymuon.tm_mday = ngay_muon.day;
+    ngaymuon.tm_mon = ngay_muon.month - 1;
+    ngaymuon.tm_year = ngay_muon.year - 1900;
+
+    ngaytra.tm_mday = ngay_tra.day;
+    ngaytra.tm_mon = ngay_tra.month - 1;
+    ngaytra.tm_year = ngay_tra.year - 1900;
+    
+    time_t ngaymuon1 = mktime(&ngaymuon);
+    time_t ngaytra1 = mktime(&ngaytra);
+
+    // Đảm bảo ngày trả phải sau ngày mượn
+    if (ngaytra1 < ngaymuon1) {
+        cout << "Ngày trả phải sau ngày mượn!" << endl;
+        return -1;
+    }
+
+    double sogiay = difftime(ngaytra1, ngaymuon1);
+    int songay = sogiay / (60 * 60 * 24);
+    return songay;
+}
+
 void InManHinhNgayThangNam(Date ngay_thang_nam) {
     cout<<ngay_thang_nam.day<<"/"<<ngay_thang_nam.month<<"/"<<ngay_thang_nam.year<<endl;
 }
 
 
-int main () {
-    Date muonsach, trasach;
-    int luachon = 1;
-    while(luachon != 0) {
-        cout<<"Nhap tuy chon: 1. muon sach          2. tra sach         3. da nhap xong, in ra thong tin        0. thoat chuong trinh"<<endl;
-        cout<<"lua chon: ";
-        cin>>luachon;
+// int main () {
+//     Date muonsach, trasach;
+//     int luachon = 1;
+//     while(luachon != 0) {
+//         cout<<"Nhap tuy chon: 1. muon sach          2. tra sach         3. da nhap xong, in ra thong tin        0. thoat chuong trinh"<<endl;
+//         cout<<"lua chon: ";
+//         cin>>luachon;
 
-        if(luachon == 1) {
-            muonsach = NgayMuon();
-            cout<<"neu muon hom nay, ngay tra du kien cua ban la: ";
-            NgayTraDuKien (muonsach);
-        }
-        else if(luachon == 2) {
-            if(muonsach.day == 0) {
-                cout<<"Quyen sach nay chua muon, vui long chon tuy chon khac!"<<endl;
-            }
-            else trasach = NgayTraThucTe();
-        }
-        else if (luachon == 3) {
-            if(muonsach.day == 0) {
-                cout<<"chua co thong tin!"<<endl;
+//         if(luachon == 1) {
+//             muonsach = NgayMuon();
+//             cout<<"neu muon hom nay, ngay tra du kien cua ban la: ";
+//             NgayTraDuKien (muonsach);
+//         }
+//         else if(luachon == 2) {
+//             if(muonsach.day == 0) {
+//                 cout<<"Quyen sach nay chua muon, vui long chon tuy chon khac!"<<endl;
+//             }
+//             else trasach = NgayTraThucTe();
+//         }
+//         else if (luachon == 3) {
+//             if(muonsach.day == 0) {
+//                 cout<<"chua co thong tin!"<<endl;
         
-            } else {
-                cout<<"Ngay muon: "; InManHinhNgayThangNam(muonsach);
-                cout<<"Ngay tra du kien: "; NgayTraDuKien(muonsach);
-                cout<<"Ngay tra thuc te: "; InManHinhNgayThangNam(trasach);
-                break;
-            }
-        }
-        else if (luachon == 0) return 0;
-        else {cout<<"khong hop le, vui long nhap lai"<<endl;}
-    }
-    return 0;
-}
+//             } else {
+//                 cout<<"Ngay muon: "; InManHinhNgayThangNam(muonsach);
+//                 cout<<"Ngay tra du kien: "; NgayTraDuKien(muonsach);
+//                 cout<<"Ngay tra thuc te: "; InManHinhNgayThangNam(trasach);
+//                 break;
+//             }
+//         }
+//         else if (luachon == 0) return 0;
+//         else {cout<<"khong hop le, vui long nhap lai"<<endl;}
+//     }
+//     return 0;
+// }
