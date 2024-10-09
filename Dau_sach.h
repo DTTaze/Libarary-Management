@@ -60,8 +60,17 @@ DanhMucSach* ThemDanhMucSach(DanhMucSach* &head_dms, int trang_thai,DanhSachDauS
     string ma_sach;
     TaoMaSach(ma_sach,danh_sach_dau_sach,vi_tri);
     DanhMucSach* new_dms = new DanhMucSach(ma_sach,trang_thai,vi_tri);
-    new_dms->next=head_dms;
-    head_dms = new_dms;
+    DanhMucSach* t = nullptr;
+    DanhMucSach* s = head_dms;
+    for ( ; s != nullptr && new_dms->masach > s->masach; t = s , s = s->next);
+    if (s == nullptr){
+        new_dms->next = head_dms;
+        head_dms = new_dms;
+    }else{
+        new_dms->next = s;
+        t->next = new_dms;
+    }
+    
     return new_dms;
 };
 
