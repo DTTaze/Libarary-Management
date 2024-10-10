@@ -13,7 +13,11 @@ struct The_Doc_Gia {
     string ten;
     TrangThaiCuaThe TrangThai;
     Phai phai;
-    DauSach* head_lsms = nullptr;
+    LichSuMuonSach* head_lsms = nullptr;
+};
+
+struct LichSuMuonSach {
+    
 };
 
 struct Danh_Sach_The_Doc_Gia {
@@ -132,6 +136,10 @@ Danh_Sach_The_Doc_Gia* Tim_Kiem(Danh_Sach_The_Doc_Gia* root, int mathe ) {
     return curr;
 }
 
+void CapNhatLichSuMuonSach() {
+
+}
+
 void Inorder(Danh_Sach_The_Doc_Gia* root ) {
     if ( root != nullptr ) {
         Inorder(root->ptr_left);
@@ -166,7 +174,6 @@ void Doc_Thong_Tin_Tu_File(const string& file_name, Danh_Sach_The_Doc_Gia* &root
         Them_Doc_Gia_Theo_Ma_So(root, docGia);
         Them_Doc_Gia_Theo_Ten(root, docGia);
     }
-
     file.close();
 }
 
