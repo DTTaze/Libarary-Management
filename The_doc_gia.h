@@ -11,7 +11,9 @@ struct The_Doc_Gia {
     unsigned int MATHE;
     string ho[10];
     string ten[10];
+    Trang_Thai_Cua_The TrangThai;
     DauSach* head_lsms = nullptr;
+    Phai phai;
 };
 
 struct Danh_Sach_The_Doc_Gia {
