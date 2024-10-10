@@ -4,13 +4,13 @@
 #include <fstream>
 using namespace std;
 
-enum phai{Nam, Nu};
+enum Phai{Nam, Nu};
+enum Trang_Thai_Cua_The{Khoa = 0, Dang_Hoat_Dong = 1};
 
 struct The_Doc_Gia {
     unsigned int MATHE;
     string ho[10];
     string ten[10];
-    enum trang_thai_cua_the{Khoa=0, Dang_Hoat_Dong=1};
     DauSach* head_lsms = nullptr;
 };
 
