@@ -5,13 +5,13 @@
 using namespace std;
 
 enum Phai{Nam = 1, Nu = 0};
-enum Trang_Thai_Cua_The{Khoa = 0, Dang_Hoat_Dong = 1};
+enum TrangThaiCuaThe{Dang_Hoat_Dong, Khoa};
 
 struct The_Doc_Gia {
     unsigned int MATHE;
-    string ho[10];
-    string ten[10];
-    Trang_Thai_Cua_The TrangThai;
+    string ho;
+    string ten;
+    TrangThaiCuaThe TrangThai;
     DauSach* head_lsms = nullptr;
     Phai phai;
 };
@@ -88,5 +88,37 @@ void Inorder(Danh_Sach_The_Doc_Gia* root ) {
         cout << root->thong_tin.MATHE << endl;
         Inorder(root->ptr_right);
     }
+}
+
+void Doc_Thong_Tin_Tu_File(const string& file_name, Danh_Sach_The_Doc_Gia* &root) {
+    ifstream file(file_name);
+    if (!file.is_open()) {
+        cout << "Không thể mở file: " << file_name << endl;
+        return;
+    }
+
+    unsigned int mathe;
+    string ho, ten, phai_str;
+    Phai phai;
+
+    while (file >> mathe >> ho >> ten >> phai_str) {
+        if (phai_str == "Nam") {
+            phai = Nam;
+        } else {
+            phai = Nu;
+        }
+
+        The_Doc_Gia docGia;
+        docGia.MATHE = mathe;
+        docGia.ho = ho;
+        docGia.ten = ten;
+        docGia.phai = phai;
+        docGia.TrangThai = TrangThaiCuaThe::Dang_Hoat_Dong;
+
+        // Thêm độc giả vào cây
+        Them_Doc_Gia(root, docGia);
+    }
+
+    file.close();
 }
 
