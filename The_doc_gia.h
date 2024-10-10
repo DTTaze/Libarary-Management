@@ -90,8 +90,8 @@ void Xoa_Doc_Gia_Theo_Ma_So(Danh_Sach_The_Doc_Gia* &r, int ma_the_doc_gia) {
                 r = rp->ptr_left;
             } else if ( rp->ptr_left == nullptr ) {
                 r = rp->ptr_right;
-            } else xoa_truong_hop_co_hai_cay_con {
-                (rp->ptr_right);
+            } else {
+                xoa_truong_hop_co_hai_cay_con(rp->ptr_right);
             }
             delete rp;
         }
