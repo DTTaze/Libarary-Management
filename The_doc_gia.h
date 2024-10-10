@@ -39,9 +39,9 @@ void Them_Doc_Gia_Theo_Ma_So(Danh_Sach_The_Doc_Gia* &root, The_Doc_Gia thong_tin
             return;
         }
         if ( root->thong_tin.MATHE < thong_tin_the_doc_gia.MATHE ) {
-            Them_Doc_Gia(root->ptr_right, thong_tin_the_doc_gia);
+            Them_Doc_Gia_Theo_Ma_So(root->ptr_right, thong_tin_the_doc_gia);
         } else {
-            Them_Doc_Gia(root->ptr_left, thong_tin_the_doc_gia);
+            Them_Doc_Gia_Theo_Ma_So(root->ptr_left, thong_tin_the_doc_gia);
         }
     }
 }
@@ -57,9 +57,9 @@ void Them_Doc_Gia_Theo_Ten(Danh_Sach_The_Doc_Gia* &root, The_Doc_Gia thong_tin_t
             return;
         }
         if ( root->thong_tin.ten[0] < thong_tin_the_doc_gia.ten[0] ) {
-            Them_Doc_Gia(root->ptr_right, thong_tin_the_doc_gia);
+            Them_Doc_Gia_Theo_Ten(root->ptr_right, thong_tin_the_doc_gia);
         } else {
-            Them_Doc_Gia(root->ptr_left, thong_tin_the_doc_gia);
+            Them_Doc_Gia_Theo_Ten(root->ptr_left, thong_tin_the_doc_gia);
         }
     }
 }
@@ -81,9 +81,9 @@ void Xoa_Doc_Gia_Theo_Ma_So(Danh_Sach_The_Doc_Gia* &r, int ma_the_doc_gia) {
     if ( r == nullptr ) printf("Khong Tim Thay ");
     else {  
         if ( r->thong_tin.MATHE < ma_the_doc_gia ) {
-            Xoa_Doc_Gia(r->ptr_right, ma_the_doc_gia );
+            Xoa_Doc_Gia_Theo_Ma_So(r->ptr_right, ma_the_doc_gia );
         } else if ( r->thong_tin.MATHE > ma_the_doc_gia ) {
-            Xoa_Doc_Gia(r->ptr_left, ma_the_doc_gia );
+            Xoa_Doc_Gia_Theo_Ma_So(r->ptr_left, ma_the_doc_gia );
         } else {
             rp = r;
             if ( rp->ptr_right == nullptr ) r = rp->ptr_left;
@@ -163,7 +163,8 @@ void Doc_Thong_Tin_Tu_File(const string& file_name, Danh_Sach_The_Doc_Gia* &root
         docGia.TrangThai = TrangThaiCuaThe::Dang_Hoat_Dong;
 
         // Thêm độc giả vào cây
-        Them_Doc_Gia(root, docGia);
+        Them_Doc_Gia_Theo_Ma_So(root, docGia);
+        Them_Doc_Gia_Theo_Ten(root, docGia);
     }
 
     file.close();
