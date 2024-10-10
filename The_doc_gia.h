@@ -4,7 +4,7 @@
 #include <fstream>
 using namespace std;
 
-enum Phai{Nam, Nu};
+enum Phai{Nam = 1, Nu = 0};
 enum Trang_Thai_Cua_The{Khoa = 0, Dang_Hoat_Dong = 1};
 
 struct The_Doc_Gia {
