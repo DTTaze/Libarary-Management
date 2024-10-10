@@ -19,41 +19,98 @@ void DocTuFile(DanhSachDauSach &danh_sach_dau_sach, DanhMucSach* &head_dms) {
 
     string line;
     while (getline(file, line)) {
-        string ISBN, tensach, tacgia, theloai, vitri;
-        int sotrang,namsx;
+        string ISBN, tensach, tacgia, theloai, vitri, hoten,ho,ten,ngaymuon,ngaytra,test;
+        int sotrang,namsx,trangthaithe,trangthaimuontra,trangthaidms;
+        unsigned int mathe;
 
         // tach thong tin tung dong
         size_t pos = 0; 
+        //ISBN
         pos = line.find('|');
         ISBN = line.substr(0, pos); line.erase(0, pos + 1);
 
+        //Ten sach
         pos = line.find('|');
         tensach = line.substr(0, pos); line.erase(0, pos + 1);
 
+        //So trang
         pos = line.find('|');
         sotrang = stoi(line.substr(0, pos)); line.erase(0, pos + 1);
 
+        //Tac gia
         pos = line.find('|');
         tacgia = line.substr(0, pos); line.erase(0, pos + 1);
-        
+		
+        //nam san xuat
         pos = line.find('|');
         namsx = stoi(line.substr(0, pos)); line.erase(0, pos + 1);
 
+        //The loai
         pos = line.find('|');
         theloai = line.substr(0, pos); line.erase(0, pos + 1);
 
+        //Vi tri
         pos = line.find('|');
         vitri = line.substr(0, pos); line.erase(0, pos + 1);
 
+        //Thieu 1 trong 5 thi bo qua dong
         if (ISBN.empty() || tensach.empty() || tacgia.empty() || theloai.empty() || vitri.empty()) {
             continue; 
         }
+		
+		//Ho va ten
+        pos = line.find('|');
+        if (pos != std::string::npos){    
+            hoten = line.substr(0, pos); line.erase(0, pos + 1);
+            
+            size_t spacepos = hoten.find(' ');
 
-        
+            if (spacepos != std::string::npos){
+                ho = hoten.substr(0, spacepos);
+                ten = hoten.substr(spacepos+1);
 
-        ThemDauSach(danh_sach_dau_sach, ISBN, tensach, sotrang, tacgia,namsx, theloai, head_dms, 0,vitri);
+            }else{
+            	continue;
+			}
+			
+			//Ngay muon sach
+			pos = line.find('|');
+            ngaymuon = line.substr(0, pos); line.erase(0, pos + 1);
+			
+			//Ngay tra sach (neu co)
+			pos = line.find('|');
+			test = line.substr(0, pos);line.erase(0, pos + 1);
+			if (!test.empty()){	
+		    	ngaytra = test; 
+
+			}else {
+				ngaytra =  " ";
+
+			}
+            
+            //Trang thai muon tra
+            pos = line.find('|');
+            test = line.substr(0, pos);line.erase(0, pos + 1);
+        	if (!test.empty()){	
+	            trangthaimuontra = stoi(test);
+
+			}else {
+				trangthaimuontra = -1;
+
+			}
+			
+			//Trang thai cua sach
+			pos = line.find('|');
+   			test = line.substr(0, pos);line.erase(0, pos + 1);
+        	if (!test.empty()){	
+	            trangthaidms = stoi(test);
+
+			}else {
+				trangthaidms = -1;
+
+			}
+        }
     }
-
     file.close();
 }
 
