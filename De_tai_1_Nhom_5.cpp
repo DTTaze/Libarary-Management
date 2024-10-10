@@ -10,16 +10,50 @@ using namespace std;
 
 
 
-void LayDayNgauNhien (int *A, int m, int n = 1){
-	for (int i = 1; i <= n; i++) {
-        A[i] = i ;
-        for (int i = 1; i <= m; i++) {
-            int select = rand() % (n - i+1) + i; 
-            swap(A[select], A[i]);
-        }
+void DocTuFile(DanhSachDauSach &danh_sach_dau_sach, DanhMucSach* &head_dms) {
+    ifstream file("Danh_sach_dau_sach.txt");
+    if (!file.is_open()) {
+        cout << "Khong the mo file!" << endl;
+        return;
     }
-}
 
+    string line;
+    while (getline(file, line)) {
+        string ISBN, tensach, tacgia, theloai, vitri;
+        int sotrang,namsx;
+
+        // tach thong tin tung dong
+        size_t pos = 0; 
+        pos = line.find('|');
+        ISBN = line.substr(0, pos); line.erase(0, pos + 1);
+
+        pos = line.find('|');
+        tensach = line.substr(0, pos); line.erase(0, pos + 1);
+
+        pos = line.find('|');
+        sotrang = stoi(line.substr(0, pos)); line.erase(0, pos + 1);
+
+        pos = line.find('|');
+        tacgia = line.substr(0, pos); line.erase(0, pos + 1);
+        
+        pos = line.find('|');
+        namsx = stoi(line.substr(0, pos)); line.erase(0, pos + 1);
+
+        pos = line.find('|');
+        theloai = line.substr(0, pos); line.erase(0, pos + 1);
+
+        pos = line.find('|');
+        vitri = line.substr(0, pos); line.erase(0, pos + 1);
+
+        if (ISBN.empty() || tensach.empty() || tacgia.empty() || theloai.empty() || vitri.empty()) {
+            continue; 
+        }
+
+        ThemDauSach(danh_sach_dau_sach, ISBN, tensach, sotrang, tacgia,namsx, theloai, head_dms, 0,vitri);
+    }
+
+    file.close();
+}
 
 
 
