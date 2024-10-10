@@ -88,18 +88,18 @@ void ThemSach (DanhSachMUONTRA * &head, MUONTRA data) {
     }
 }
 
-void InManHinhDSSach(DanhSachMUONTRA * head) {
+int InManHinhDSSach(DanhSachMUONTRA * head) {
     DanhSachMUONTRA * temp = head;
     while(temp != nullptr) {
         cout << temp->data.masach<<endl;
         InManHinhNgayThangNam(temp->data.NgayMuon);
         InManHinhNgayThangNam(temp->data.NgayTra);
         if(temp->data.trangthai == 0) {
-            cout << "0"<<endl;
+            return 0;
         } else if(temp->data.trangthai == 1) {
-            cout << "1"<< endl;
+            return 1;
         } else {
-            cout << "2" << endl;
+            return 2;
         }
     }
 }
