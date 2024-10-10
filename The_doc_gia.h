@@ -52,11 +52,11 @@ void Them_Doc_Gia_Theo_Ten(Danh_Sach_The_Doc_Gia* &root, The_Doc_Gia thong_tin_t
         con_tro_the_doc_gia->thong_tin = thong_tin_the_doc_gia;
         root = con_tro_the_doc_gia;
     } else {
-        if ( root->thong_tin.ten[0] == thong_tin_the_doc_gia.ten[0] ) {
-            cout << "Ma the doc gia da ton tai." << endl;   
+        if ( root->thong_tin.ten == thong_tin_the_doc_gia.ten ) {
+            cout << "Ten doc gia da ton tai." << endl;   
             return;
         }
-        if ( root->thong_tin.ten[0] < thong_tin_the_doc_gia.ten[0] ) {
+        if ( root->thong_tin.ten < thong_tin_the_doc_gia.ten ) {
             Them_Doc_Gia_Theo_Ten(root->ptr_right, thong_tin_the_doc_gia);
         } else {
             Them_Doc_Gia_Theo_Ten(root->ptr_left, thong_tin_the_doc_gia);
@@ -86,9 +86,13 @@ void Xoa_Doc_Gia_Theo_Ma_So(Danh_Sach_The_Doc_Gia* &r, int ma_the_doc_gia) {
             Xoa_Doc_Gia_Theo_Ma_So(r->ptr_left, ma_the_doc_gia );
         } else {
             rp = r;
-            if ( rp->ptr_right == nullptr ) r = rp->ptr_left;
-            else if ( rp->ptr_left == nullptr ) r = rp->ptr_right;
-            else xoa_truong_hop_co_hai_cay_con(rp->ptr_right);
+            if ( rp->ptr_right == nullptr ) {
+                r = rp->ptr_left;
+            } else if ( rp->ptr_left == nullptr ) {
+                r = rp->ptr_right;
+            } else xoa_truong_hop_co_hai_cay_con {
+                (rp->ptr_right);
+            }
             delete rp;
         }
     }
@@ -99,7 +103,6 @@ void Xoa_Doc_Gia_Theo_Ten(Danh_Sach_The_Doc_Gia* &r, const string& ten_doc_gia) 
         cout << "Khong Tim Thay " << ten_doc_gia << endl;
         return;
     }
-
     if (r->thong_tin.ten < ten_doc_gia) {
         Xoa_Doc_Gia_Theo_Ten(r->ptr_right, ten_doc_gia);
     } else if (r->thong_tin.ten > ten_doc_gia) {
@@ -154,15 +157,12 @@ void Doc_Thong_Tin_Tu_File(const string& file_name, Danh_Sach_The_Doc_Gia* &root
         } else {
             phai = Nu;
         }
-
         The_Doc_Gia docGia;
         docGia.MATHE = mathe;
         docGia.ho = ho;
         docGia.ten = ten;
         docGia.phai = phai;
         docGia.TrangThai = TrangThaiCuaThe::Dang_Hoat_Dong;
-
-        // Thêm độc giả vào cây
         Them_Doc_Gia_Theo_Ma_So(root, docGia);
         Them_Doc_Gia_Theo_Ten(root, docGia);
     }
