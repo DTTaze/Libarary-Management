@@ -5,15 +5,15 @@
 using namespace std;
 
 enum Phai{Nam = 1, Nu = 0};
-enum TrangThaiCuaThe{Dang_Hoat_Dong, Khoa};
+enum TrangThaiCuaThe{Dang_Hoat_Dong = 1, Khoa = 0};
 
 struct The_Doc_Gia {
     unsigned int MATHE;
     string ho;
     string ten;
     TrangThaiCuaThe TrangThai;
-    DauSach* head_lsms = nullptr;
     Phai phai;
+    DauSach* head_lsms = nullptr;
 };
 
 struct Danh_Sach_The_Doc_Gia {
