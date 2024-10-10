@@ -142,7 +142,3 @@ void DanhSachSachDocGiaMuon(DocGiaMuonSach doc_gia) {
 }
 
 
-
-int main() {
-
-}
