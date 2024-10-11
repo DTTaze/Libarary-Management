@@ -20,7 +20,7 @@ void DocTuFile(DanhSachDauSach &danh_sach_dau_sach, DanhMucSach* &head_dms) {
     string line;
     while (getline(file, line)) {
         string ISBN, tensach, tacgia, theloai, vitri, hoten,ho,ten,ngaymuon,ngaytra,test;
-        int sotrang,namsx,trangthaithe,trangthaimuontra,trangthaidms;
+        int sotrang,namsx,trangthaithe,trangthaimuontra,trangthaidms,den;
         unsigned int mathe;
 
         // tach thong tin tung dong
@@ -58,9 +58,13 @@ void DocTuFile(DanhSachDauSach &danh_sach_dau_sach, DanhMucSach* &head_dms) {
             continue; 
         }
 		
-		//Ho va ten
+		//mã thẻ(nếu có)
         pos = line.find('|');
         if (pos != std::string::npos){    
+            mathe = stoi(line.substr(0, pos)); line.erase(0, pos + 1);
+
+            //ho và ten
+            pos = line.find('|');
             hoten = line.substr(0, pos); line.erase(0, pos + 1);
             
             size_t spacepos = hoten.find(' ');
@@ -96,6 +100,17 @@ void DocTuFile(DanhSachDauSach &danh_sach_dau_sach, DanhMucSach* &head_dms) {
 
 			}else {
 				trangthaimuontra = -1;
+
+			}
+
+            //den
+            pos = line.find('|');
+            test = line.substr(0, pos);line.erase(0, pos + 1);
+        	if (!test.empty()){	
+	            den = stoi(test);
+
+			}else {
+				den = -1;
 
 			}
 			
