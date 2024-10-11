@@ -16,6 +16,10 @@ int Random_Ptr = 0;
 struct LichSuMuonSach {
     DauSach* ThongTinDauSach;
     LichSuMuonSach* next; 
+    LichSuMuonSach(DauSach* ThongTinDauSach = nullptr, LichSuMuonSach* next = nullptr) {
+        this->ThongTinDauSach = ThongTinDauSach;
+        this->next = next;
+    }
 };
 
 struct The_Doc_Gia {

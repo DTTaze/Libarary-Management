@@ -57,8 +57,9 @@ struct DanhSachMUONTRA { // danh sach cac quyen sach da hoac dang muon
 struct DocGiaMuonSach { 
     The_Doc_Gia docgia;
     DanhSachMUONTRA *danhsachmuontra;
+    LichSuMuonSach *lichsumuonsach;
 
-    DocGiaMuonSach(const The_Doc_Gia &thedocgia) : docgia(thedocgia), danhsachmuontra(nullptr) {}
+    DocGiaMuonSach(const The_Doc_Gia &thedocgia) : docgia(thedocgia), danhsachmuontra(nullptr), lichsumuonsach(nullptr){}
 };
 
 int DemSoSach(DanhSachMUONTRA *demsach) {
@@ -171,9 +172,28 @@ void LuuNgayMuon(const string& fileName, const Date& ngay_muon) {
     }
 }
 
+void ThemSachVaoLSMS(LichSuMuonSach * &sach, const string& I_S_B_N, const string& ten_sach, int so_trang,
+                        const string& tac_gia,int nam_sx, const string& the_loai, DanhMucSach* ptr_dms) {
+    DauSach* thongtindausach = new DauSach (I_S_B_N, ten_sach, so_trang, tac_gia, nam_sx, the_loai, ptr_dms);
+    LichSuMuonSach * newLichSu = new LichSuMuonSach( thongtindausach, nullptr);
+    if (sach == nullptr)
+    {
+        sach = newLichSu;
+    }
+    else {
+        LichSuMuonSach* temp = sach;
+        while(temp->next != nullptr) {
+            temp = temp->next;
+        }
+        temp->next = newLichSu;
+    }
+}
+
 void MuonSach (DocGiaMuonSach *doc_gia) {
     DocGiaMuonSach *tmp = doc_gia;
     DanhSachMUONTRA *temp = tmp->danhsachmuontra;
+    LichSuMuonSach *lichsu = tmp->lichsumuonsach;
+    
     int sosach = DemSoSach(temp);
     if(doc_gia->docgia.TrangThai == Khoa || temp->data.trangthai == 2 || sosach>3) {
         cout<<"khong the muon sach"<<endl;
@@ -191,6 +211,8 @@ void MuonSach (DocGiaMuonSach *doc_gia) {
         temp->data.NgayMuon = ngaymuon;
         temp->data.NgayTra = ngaytra;
         ThemSach(temp, ma, tensach, ngaymuon, ngaytra);
+        ThemSachVaoLSMS(lichsu, lichsu->ThongTinDauSach->ISBN, temp->data.tensach, lichsu->ThongTinDauSach->sotrang, lichsu->ThongTinDauSach->tacgia, 
+                    lichsu->ThongTinDauSach->namsx, lichsu->ThongTinDauSach->theloai, lichsu->ThongTinDauSach->dms );
     }
 }
 
