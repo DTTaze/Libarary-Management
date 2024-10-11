@@ -20,7 +20,7 @@ void TaoMaSach(string& ma_sach ,DanhSachDauSach &danh_sach_dau_sach, string& vi_
 
 DanhMucSach* ThemDanhMucSach(DanhMucSach* &head_dms, int trang_thai,DanhSachDauSach &danh_sach_dau_sach, string& vi_tri) {
 
-    //them vao dau danh sach voi O(1)
+    //them vao dau danh sach sap xep theo ma sach
     string ma_sach;
     TaoMaSach(ma_sach,danh_sach_dau_sach,vi_tri);
     DanhMucSach* new_dms = new DanhMucSach(ma_sach,trang_thai,vi_tri);
