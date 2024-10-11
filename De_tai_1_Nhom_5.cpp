@@ -10,7 +10,7 @@ using namespace std;
 
 
 
-void DocTuFile(DanhSachDauSach &danh_sach_dau_sach, DanhMucSach* &head_dms) {
+void DocTuFile(DanhSachDauSach &danh_sach_dau_sach,DanhMucSach* &danh_muc_sach) {
     ifstream file("Danh_sach_dau_sach.txt");
     if (!file.is_open()) {
         cout << "Khong the mo file!" << endl;
@@ -19,115 +19,104 @@ void DocTuFile(DanhSachDauSach &danh_sach_dau_sach, DanhMucSach* &head_dms) {
 
     string line;
     while (getline(file, line)) {
-        string ISBN, tensach, tacgia, theloai, vitri, hoten,ho,ten,ngaymuon,ngaytra,test,phai;
-        int sotrang,namsx,trangthaithe,trangthaimuontra,trangthaidms,den;
+        string ISBN, tensach, tacgia, theloai, vitri, hoten, ho, ten, ngaymuon, ngaytra, test, phai;
+        int sotrang, namsx, trangthaithe, trangthaimuontra, trangthaidms, den;
         unsigned int mathe;
 
-        // tach thong tin tung dong
+        // Tach thong tin tung dong
         size_t pos = 0; 
-        //ISBN
+        // ISBN
         pos = line.find('|');
         ISBN = line.substr(0, pos); line.erase(0, pos + 1);
-
-        //Ten sach
+        cout << ISBN << "|";
+        
+        // Ten sach
         pos = line.find('|');
         tensach = line.substr(0, pos); line.erase(0, pos + 1);
-
-        //So trang
+        cout << tensach << "|";
+        
+        // So trang
         pos = line.find('|');
         sotrang = stoi(line.substr(0, pos)); line.erase(0, pos + 1);
+        cout << sotrang << "|";
 
-        //Tac gia
+        // Tac gia
         pos = line.find('|');
         tacgia = line.substr(0, pos); line.erase(0, pos + 1);
-		
-        //nam san xuat
+        cout << tacgia << "|";
+
+        // Nam san xuat
         pos = line.find('|');
         namsx = stoi(line.substr(0, pos)); line.erase(0, pos + 1);
+        cout << namsx << "|";
 
-        //The loai
+        // The loai
         pos = line.find('|');
         theloai = line.substr(0, pos); line.erase(0, pos + 1);
+        cout << theloai << "|";
 
-        //Vi tri
+        // Vi tri
         pos = line.find('|');
         vitri = line.substr(0, pos); line.erase(0, pos + 1);
+        cout << vitri << "|";
 
-        //Thieu 1 trong 5 thi bo qua dong
+        // Thieu 1 trong 5 thi bo qua dong
         if (ISBN.empty() || tensach.empty() || tacgia.empty() || theloai.empty() || vitri.empty()) {
             continue; 
         }
-		
-		//mã thẻ(nếu có)
-        pos = line.find('|');
-        if (pos != std::string::npos){    
-            mathe = stoi(line.substr(0, pos)); line.erase(0, pos + 1);
 
-            //ho và ten
+        // Mathe
+        pos = line.find('|');
+        if (pos != string::npos) {    
+            mathe = stoi(line.substr(0, pos)); line.erase(0, pos + 1);
+            cout << mathe << "|";
+            
+            // Ho và tên
             pos = line.find('|');
             hoten = line.substr(0, pos); line.erase(0, pos + 1);
-            
+            cout << hoten << "|";
+
             size_t spacepos = hoten.find(' ');
-
-            if (spacepos != std::string::npos){
+            if (spacepos != string::npos) {
                 ho = hoten.substr(0, spacepos);
-                ten = hoten.substr(spacepos+1);
+                ten = hoten.substr(spacepos + 1);
+            } else {
+                continue;
+            }
 
-            }else{
-            	continue;
-			}
-			
-			//Ngay muon sach
-			pos = line.find('|');
+            // Ngay muon sach
+            pos = line.find('|');
             ngaymuon = line.substr(0, pos); line.erase(0, pos + 1);
-			
-			//Ngay tra sach (neu co)
-			pos = line.find('|');
-			test = line.substr(0, pos);line.erase(0, pos + 1);
-			if (!test.empty()){	
-		    	ngaytra = test; 
+            cout << ngaymuon << "|";
 
-			}else {
-				ngaytra =  " ";
-
-			}
-            
-            //Trang thai muon tra
+            // Ngay tra sach (neu co)
             pos = line.find('|');
-            test = line.substr(0, pos);line.erase(0, pos + 1);
-        	if (!test.empty()){	
-	            trangthaimuontra = stoi(test);
+            test = line.substr(0, pos); line.erase(0, pos + 1);
+            ngaytra = test.empty() ? " " : test;
+            cout << ngaytra << "|";
 
-			}else {
-				trangthaimuontra = -1;
-
-			}
-
-            //den
+            // Trang thai muon tra
             pos = line.find('|');
-            test = line.substr(0, pos);line.erase(0, pos + 1);
-        	if (!test.empty()){	
-	            den = stoi(test);
+            test = line.substr(0, pos); line.erase(0, pos + 1);
+            trangthaimuontra = test.empty() ? -1 : stoi(test);
+            cout << trangthaimuontra << "|";
 
-			}else {
-				den = -1;
-
-			}
-			
-			//Trang thai cua sach
-			pos = line.find('|');
-   			test = line.substr(0, pos);line.erase(0, pos + 1);
-        	if (!test.empty()){	
-	            trangthaidms = stoi(test);
-
-			}else {
-				trangthaidms = -1;
-
-			}
-
-            //phai
+            // Den
             pos = line.find('|');
-            phai = stoi(line.substr(0, pos)); line.erase(0, pos + 1);
+            test = line.substr(0, pos); line.erase(0, pos + 1);
+            den = test.empty() ? -1 : stoi(test);
+            cout << den << "|";
+
+            // Trang thai cua sach
+            pos = line.find('|');
+            test = line.substr(0, pos); line.erase(0, pos + 1);
+            trangthaidms = test.empty() ? -1 : stoi(test);
+            cout << trangthaidms << "|";
+
+            // Phai
+            pos = line.find('|');
+            phai = (pos != string::npos) ? line.substr(0, pos) : " ";
+            cout << phai << "|\n";
         }
     }
     file.close();

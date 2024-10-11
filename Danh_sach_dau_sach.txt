@@ -24,8 +24,8 @@
 978-3-16-148410-1|Introduction to the Theory of Computation|328|Michael Sipser|2022|Computer Science|D
 978-0-201-70353-1|Design Patterns: Elements of Reusable Object-Oriented Software|395|Erich Gamma|2018|Software Engineering|E
 978-0-321-65536-1|The Art of Computer Programming|3168|Donald Knuth|2023|Computer Science|F
-978-1-59327-828-2|Learning Python|564|Mark Lutz|2020|Programming|G23456|Avery Sanchez|05/01/2024|09/01/2024|1||0|0
-978-1-4919-4000-5|You Don’t Know JS|278|Kyle Simpson|2019|JavaScript|H78901|Benjamin White|21/04/2024|25/04/2024|1||0|0
+978-1-59327-828-2|Learning Python|564|Mark Lutz|2020|Programming|G|23456|Avery Sanchez|05/01/2024|09/01/2024|1||0|0
+978-1-4919-4000-5|You Don’t Know JS|278|Kyle Simpson|2019|JavaScript|H|78901|Benjamin White|21/04/2024|25/04/2024|1||0|0
 978-0-262-03384-1|Introduction to Algorithms|1312|Thomas H. Cormen|2021|Algorithms|I|90123|Henry Roberts|13/03/2024|1|07/03/2024|1||0|0
 978-0-321-64280-5|Code Complete|960|Steve McConnell|2022|Software Engineering|J|90123|Henry Roberts|30/04/2024||2|0|1|0
 978-0-131-23457-2|The Mythical Man-Month|352|Frederick P. Brooks Jr.|2018|Software Engineering|A
