@@ -19,7 +19,7 @@ void DocTuFile(DanhSachDauSach &danh_sach_dau_sach, DanhMucSach* &head_dms) {
 
     string line;
     while (getline(file, line)) {
-        string ISBN, tensach, tacgia, theloai, vitri, hoten,ho,ten,ngaymuon,ngaytra,test;
+        string ISBN, tensach, tacgia, theloai, vitri, hoten,ho,ten,ngaymuon,ngaytra,test,phai;
         int sotrang,namsx,trangthaithe,trangthaimuontra,trangthaidms,den;
         unsigned int mathe;
 
@@ -124,6 +124,10 @@ void DocTuFile(DanhSachDauSach &danh_sach_dau_sach, DanhMucSach* &head_dms) {
 				trangthaidms = -1;
 
 			}
+
+            //phai
+            pos = line.find('|');
+            phai = stoi(line.substr(0, pos)); line.erase(0, pos + 1);
         }
     }
     file.close();
