@@ -42,6 +42,10 @@ struct MUONTRA { // thong tin quyen sach doc gia da va dang muon
     int trangthai;
     MUONTRA(string ma, const string &ten, const Date &ngayMuon, const Date &ngayTra) : masach(ma), tensach(ten), NgayMuon(ngayMuon), NgayTra(ngayTra) 
     { trangthai = TrangThai(NgayMuon, NgayTra);}
+
+    bool operator == (const MUONTRA &other) const {
+        return masach == other.masach && tensach == other.tensach && NgayMuon == other.NgayMuon && NgayTra == other.NgayTra;
+    }
 };
 
 struct DanhSachMUONTRA { // danh sach cac quyen sach da hoac dang muon
@@ -82,6 +86,49 @@ void ThemSach (DanhSachMUONTRA * &head, string ma, const string &ten, const Date
         }
         temp->next = newMUONTRA;
     }
+}
+
+bool Empty(DanhSachMUONTRA * First)
+{   return(First == NULL);
+}
+
+int XoaSachDauTien (DanhSachMUONTRA *&First)
+{ DanhSachMUONTRA * p;
+   if (Empty(First))      return 0;
+    p = First;    // nut can xoa la nut dau
+    First = p->next;
+    delete p; 
+    return 1;
+}
+
+int XoaSachSauSachP(DanhSachMUONTRA * p)
+{   DanhSachMUONTRA * q;
+  // nếu p là NULL hoặc sau p không có nút
+   if((p == NULL) || (p->next == NULL))	
+      return 0;
+      q = p->next;  // q chi nut can xoa
+      p->next = q->next;
+     delete q;
+     return 1;
+}
+
+int XoaSachTheoThongTin(DanhSachMUONTRA * &head, string ma, const string &ten, const Date &ngayMuon, const Date &ngayTra) {  
+    MUONTRA data(ma, ten, ngayMuon, ngayTra);
+    DanhSachMUONTRA * p=head;
+  if (head == NULL ) return 0;
+  if (head->data == data ) {
+        XoaSachDauTien(head); return 1;
+  }
+     
+while (p->next != nullptr) {
+        if (p->next->data == data) {
+            XoaSachSauSachP(p);
+            return 1;
+        }
+        p = p->next;
+    }
+
+    return 0;
 }
 
 enum DenSach {daden, chuaden};
@@ -128,7 +175,7 @@ void MuonSach (DocGiaMuonSach *doc_gia) {
     DocGiaMuonSach *tmp = doc_gia;
     DanhSachMUONTRA *temp = tmp->danhsachmuontra;
     int sosach = DemSoSach(temp);
-    if(doc_gia->docgia.TrangThai == Khoa || tmp->docgia.TrangThai == 2 || sosach>3) {
+    if(doc_gia->docgia.TrangThai == Khoa || temp->data.trangthai == 2 || sosach>3) {
         cout<<"khong the muon sach"<<endl;
         return;
     } else {

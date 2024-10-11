@@ -12,6 +12,10 @@ struct Date {
     int year = 0;
 };
 
+bool operator == (const Date &d1, const Date &d2) {
+    return d1.day == d2.day && d1.month == d2.month && d1.year == d2.year;
+}
+
 bool laNamNhuan(int year) {
     return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
 }
