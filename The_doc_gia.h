@@ -1,3 +1,5 @@
+#ifndef THE_DOC_GIA_H
+#define THE_DOC_GIA_H
 #include <iostream> 
 #include <cstring>
 #include <string>
@@ -204,3 +206,4 @@ void Doc_Thong_Tin_Tu_File(const string& file_name, Danh_Sach_The_Doc_Gia_Theo_M
     file.close();
 }
 
+#endif // THE_DOC_GIA_H
