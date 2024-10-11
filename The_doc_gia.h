@@ -5,10 +5,18 @@
 #include <string>
 #include <fstream>
 #include "Dau_sach.h"
+#define MAXRANDOM 10000
 using namespace std;
 
 enum Phai{Nam = 1, Nu = 0};
 enum TrangThaiCuaThe{Dang_Hoat_Dong = 1, Khoa = 0};
+int DayNgauNhien[MAXRANDOM];
+int Random_Ptr = 0;
+
+struct LichSuMuonSach {
+    DauSach* ThongTinDauSach;
+    LichSuMuonSach* next; 
+};
 
 struct The_Doc_Gia {
     unsigned int MATHE;
@@ -17,11 +25,6 @@ struct The_Doc_Gia {
     TrangThaiCuaThe TrangThai;
     Phai phai;
     LichSuMuonSach* head_lsms = nullptr;
-};
-
-struct LichSuMuonSach {
-    DauSach* ThongTinDauSach;
-    LichSuMuonSach* next; 
 };
 
 struct Danh_Sach_The_Doc_Gia_Theo_Ma_So {
@@ -165,8 +168,16 @@ Danh_Sach_The_Doc_Gia_Theo_Ten* Tim_Kiem_Theo_Ten(Danh_Sach_The_Doc_Gia_Theo_Ten
     return curr;
 }
 
-void CapNhatLichSuMuonSach() {
+void CapNhatLichSuMuonSachMaSo(int MaThe, LichSuMuonSach* SachMuon, Danh_Sach_The_Doc_Gia_Theo_Ma_So* root_ma_so) {
+    Danh_Sach_The_Doc_Gia_Theo_Ma_So* DocGiaMuonSach = Tim_Kiem_Theo_Ma_So(root_ma_so, MaThe);
+    SachMuon->next = DocGiaMuonSach->thong_tin.head_lsms;
+    DocGiaMuonSach->thong_tin.head_lsms = SachMuon;
+}
 
+void CapNhatLichSuMuonSachTen(int MaThe, LichSuMuonSach* SachMuon, Danh_Sach_The_Doc_Gia_Theo_Ten* root_ten) {
+    Danh_Sach_The_Doc_Gia_Theo_Ten* DocGiaMuonSach = Tim_Kiem_Theo_Ten(root_ten, MaThe);
+    SachMuon->next = DocGiaMuonSach->thong_tin.head_lsms;
+    DocGiaMuonSach->thong_tin.head_lsms = SachMuon;
 }
 
 void Inorder(Danh_Sach_The_Doc_Gia_Theo_Ten* root ) {
@@ -174,6 +185,43 @@ void Inorder(Danh_Sach_The_Doc_Gia_Theo_Ten* root ) {
         Inorder(root->ptr_left);
         cout << root->thong_tin.MATHE << endl;
         Inorder(root->ptr_right);
+    }
+}
+
+void swap( int& a, int& b ) {
+    int temp = b;
+    b = a;
+    a = temp;
+}
+
+void LayDayNgauNhien (int *DayNgauNhien) {
+    srand(time(NULL)); 
+	for (int i = 0; i < MAXRANDOM; i++) {
+        DayNgauNhien[i] = i + 1;
+    }
+    for (int i = 0; i < MAXRANDOM; i++) {
+        int select = rand() % (MAXRANDOM - i) + i; 
+        swap(DayNgauNhien[select], DayNgauNhien[i]);
+    }
+}
+
+int LayMaTheNgauNhien() {
+    if ( Random_Ptr >= MAXRANDOM) {
+        return -1;
+    }
+    return DayNgauNhien[Random_Ptr++];
+}
+
+void TraVeSoNgauNhien(int So_Tra_Ve) {
+    int ViTri = 0;
+    for ( ; ViTri < Random_Ptr; ViTri++ ) {
+        if ( DayNgauNhien[ViTri] == So_Tra_Ve ) {
+            break;
+        }
+    }
+    
+    if ( ViTri != -1 ) {
+        swap(DayNgauNhien[ViTri], DayNgauNhien[--Random_Ptr]);
     }
 }
 
@@ -204,6 +252,12 @@ void Doc_Thong_Tin_Tu_File(const string& file_name, Danh_Sach_The_Doc_Gia_Theo_M
         Them_Doc_Gia_Theo_Ten(root_ten, DocGia);
     }
     file.close();
+}
+
+int main() {
+    LayDayNgauNhien(DayNgauNhien);
+    int so = LayMaTheNgauNhien();
+    cout << so;
 }
 
 #endif // THE_DOC_GIA_H
