@@ -268,10 +268,10 @@ void Doc_Thong_Tin_Tu_File(const string& file_name, Danh_Sach_The_Doc_Gia_Theo_M
     file.close();
 }
 
-int main() {
-    LayDayNgauNhien(DayNgauNhien);
-    int so = LayMaTheNgauNhien();
-    cout << so;
-}
+// int main() {
+//     LayDayNgauNhien(DayNgauNhien);
+//     int so = LayMaTheNgauNhien();
+//     cout << so;
+// }
 
 #endif // THE_DOC_GIA_H
