@@ -132,8 +132,12 @@ int DemSoNgay(Date ngay_muon, Date ngay_tra) {
     time_t ngaytra1 = mktime(&ngaytra);
 
     // Đảm bảo ngày trả phải sau ngày mượn
+    if (ngaymuon1 == -1 || ngaytra1 == -1) {
+        cout << "Lỗi: Ngày mượn hoặc ngày trả không hợp lệ!" << endl;
+        return -1;
+    }
     if (ngaytra1 < ngaymuon1) {
-        cout << "Ngày trả phải sau ngày mượn!" << endl;
+        cout << "Ngay tra phai sau ngay muon!" << endl;
         return -1;
     }
 

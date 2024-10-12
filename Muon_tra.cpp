@@ -160,17 +160,6 @@ void InManHinhDSSach(DocGiaMuonSach * head) {
     }
 }
 
-void LuuNgayMuon(const string& fileName, const Date& ngay_muon) {
-    ofstream file(fileName);
-    if (file.is_open()) {
-        file << ngay_muon.day << "/" << ngay_muon.month << "/" << ngay_muon.year;
-        file.close();
-        cout << "Ngay muon sach da duoc luu: " << ngay_muon.day << "/" << ngay_muon.month << "/" << ngay_muon.year << endl;
-    } else {
-        cout << "Khong the mo file de ghi." << endl;
-    }
-}
-
 void ThemSachVaoLSMS(LichSuMuonSach * &sach, const string& I_S_B_N, const string& ten_sach, int so_trang,
                         const string& tac_gia,int nam_sx, const string& the_loai, DanhMucSach* ptr_dms) {
     DauSach* thongtindausach = new DauSach (I_S_B_N, ten_sach, so_trang, tac_gia, nam_sx, the_loai, ptr_dms);
@@ -228,7 +217,7 @@ void DanhSachSachDocGiaMuon(DocGiaMuonSach doc_gia) {
 void DocFile(const string &tenFile, DocGiaMuonSach *&doc_gia) {
     ifstream file("Danh_sach_dau_sach.txt");
     if (!file.is_open()) {
-        cout << "Không thể mở file." << endl;
+        cout << "Khong the mo file." << endl;
         return;
     }
 
