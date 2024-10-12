@@ -20,7 +20,7 @@ struct The_Doc_Gia {
     string Ten;
     TrangThaiCuaThe TrangThai;
     Phai phai;
-    MUONTRA* head_lsms = nullptr;
+    DanhSachMUONTRA* head_lsms = nullptr;
 };
 
 struct Danh_Sach_The_Doc_Gia {
