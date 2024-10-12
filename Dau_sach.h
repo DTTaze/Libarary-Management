@@ -34,9 +34,7 @@ struct DauSach {
 struct DanhSachDauSach{
     int demsach= 0;
     DauSach* node[MAXSACH];    
-    int Masach[10][10][100]; 
-    int SodaytrongKhuvuc[10] = {0};
-    int Sosachtrongday[10][10] ={{0}};
+    int demsachvitri[10]={0};
 };
 
 

@@ -3,19 +3,21 @@ using namespace std;
 
 void TaoMaSach(string& ma_sach ,DanhSachDauSach &danh_sach_dau_sach, string& vi_tri){
     int Khu_vuc = vi_tri[0] - 'A'; // khu A : 0 , B : 1 , ...
-    int day = danh_sach_dau_sach.SodaytrongKhuvuc[Khu_vuc];
 
-    if(danh_sach_dau_sach.Sosachtrongday[Khu_vuc][day] > 99) {
-        danh_sach_dau_sach.SodaytrongKhuvuc[Khu_vuc]++;//neu da co 100 cuon sach thi tang len day tiep theo
-        day++;
+    if(danh_sach_dau_sach.demsachvitri[Khu_vuc] > 999) { // bat dau tu index 0 den 999 la 1000 cuon
+        cout<<"Vi tri : "<<vi_tri<<" da day \n";
+        Khu_vuc++;//neu da co 1000 cuon sach thi tang len khu tiep theo
     };
 
+    int so_sach_trong_phan_khu = danh_sach_dau_sach.demsachvitri[Khu_vuc];
+    
+    int phan_khu = (so_sach_trong_phan_khu / 100) + 1;
+    int index_sach = (so_sach_trong_phan_khu % 100) + 1;
 
-    int so_sach = danh_sach_dau_sach.Sosachtrongday[Khu_vuc][day];
-    vi_tri += to_string(day);
-    ma_sach = vi_tri + "-" + to_string(so_sach);
+    vi_tri += to_string(phan_khu);
+    ma_sach = vi_tri + "-" + to_string(index_sach);
 
-    danh_sach_dau_sach.Sosachtrongday[Khu_vuc][day]++;
+    danh_sach_dau_sach.demsachvitri[Khu_vuc]++;
 }
 
 DanhMucSach* ThemDanhMucSach(DanhMucSach* &head_dms, int trang_thai,DanhSachDauSach &danh_sach_dau_sach, string& vi_tri) {
@@ -211,9 +213,8 @@ void TimKiemTenSach(DanhSachDauSach &danh_sach_dau_sach){
 
 bool KiemTraDaySachKV(DanhSachDauSach &danh_sach_dau_sach,string vi_tri){
     int Khu_vuc = vi_tri[0] - 'A'; // khu A : 0 , B : 1 , ...,J : 9
-    int day = danh_sach_dau_sach.SodaytrongKhuvuc[Khu_vuc];
-    int so_sach = danh_sach_dau_sach.Sosachtrongday[Khu_vuc][day];
-    if (day == 9 && so_sach > 99){
+    int so_sach_trong_phan_khu = danh_sach_dau_sach.demsachvitri[Khu_vuc];
+    if (so_sach_trong_phan_khu > 999){
         cout<<"So sach trong vi tri : "<<vi_tri<< " da day, vui long nhap lai.\n";
         return true;
     }else{return false;};

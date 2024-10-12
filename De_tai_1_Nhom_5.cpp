@@ -22,6 +22,4 @@ int main() {
     DanhMucSach* danh_muc_sach = nullptr;
 
     DocTuFile(danh_sach_dau_sach,danh_muc_sach);
-
-    InTheoTungTheLoai(danh_sach_dau_sach);
 }
