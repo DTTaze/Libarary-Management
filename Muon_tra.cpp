@@ -35,11 +35,16 @@ int TrangThai(Date ngay_muon, Date ngay_tra) { // trạng thái sách của đ
 
 struct MUONTRA { // thong tin quyen sach doc gia da va dang muon
     string masach;
+    string tensach;
     Date NgayMuon;
     Date NgayTra;
     int trangthai;
-    MUONTRA(string ma, const Date &ngayMuon, const Date &ngayTra) : masach(ma), NgayMuon(ngayMuon), NgayTra(ngayTra) 
+    MUONTRA(string ma, const string &ten, const Date &ngayMuon, const Date &ngayTra) : masach(ma), tensach(ten), NgayMuon(ngayMuon), NgayTra(ngayTra) 
     { trangthai = TrangThai(NgayMuon, NgayTra);}
+
+    bool operator == (const MUONTRA &other) const {
+        return masach == other.masach && tensach == other.tensach && NgayMuon == other.NgayMuon && NgayTra == other.NgayTra;
+    }
 };
 
 struct DanhSachMUONTRA { // danh sach cac quyen sach da hoac dang muon
@@ -155,17 +160,6 @@ void InManHinhDSSach(DocGiaMuonSach * head) {
     }
 }
 
-void LuuNgayMuon(const string& fileName, const Date& ngay_muon) {
-    ofstream file(fileName);
-    if (file.is_open()) {
-        file << ngay_muon.day << "/" << ngay_muon.month << "/" << ngay_muon.year;
-        file.close();
-        cout << "Ngay muon sach da duoc luu: " << ngay_muon.day << "/" << ngay_muon.month << "/" << ngay_muon.year << endl;
-    } else {
-        cout << "Khong the mo file de ghi." << endl;
-    }
-}
-
 void ThemSachVaoLSMS(LichSuMuonSach * &sach, const string& I_S_B_N, const string& ten_sach, int so_trang,
                         const string& tac_gia,int nam_sx, const string& the_loai, DanhMucSach* ptr_dms) {
     DauSach* thongtindausach = new DauSach (I_S_B_N, ten_sach, so_trang, tac_gia, nam_sx, the_loai, ptr_dms);
@@ -223,7 +217,7 @@ void DanhSachSachDocGiaMuon(DocGiaMuonSach doc_gia) {
 void DocFile(const string &tenFile, DocGiaMuonSach *&doc_gia) {
     ifstream file("Danh_sach_dau_sach.txt");
     if (!file.is_open()) {
-        cout << "Không thể mở file." << endl;
+        cout << "Khong the mo file." << endl;
         return;
     }
 
