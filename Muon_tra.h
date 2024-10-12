@@ -36,16 +36,11 @@ int TrangThai(Date ngay_muon, Date ngay_tra) { // trạng thái sách của đ
 
 struct MUONTRA { // thong tin quyen sach doc gia da va dang muon
     string masach;
-    string tensach;
     Date NgayMuon;
     Date NgayTra;
     int trangthai;
-    MUONTRA(string ma, const string &ten, const Date &ngayMuon, const Date &ngayTra) : masach(ma), tensach(ten), NgayMuon(ngayMuon), NgayTra(ngayTra) 
+    MUONTRA(string ma, const Date &ngayMuon, const Date &ngayTra) : masach(ma), tensach(ten), NgayMuon(ngayMuon), NgayTra(ngayTra) 
     { trangthai = TrangThai(NgayMuon, NgayTra);}
-
-    bool operator == (const MUONTRA &other) const {
-        return masach == other.masach && tensach == other.tensach && NgayMuon == other.NgayMuon && NgayTra == other.NgayTra;
-    }
 };
 
 struct DanhSachMUONTRA { // danh sach cac quyen sach da hoac dang muon
