@@ -5,6 +5,7 @@
 #include <string>
 #include <fstream>
 #include "Dau_sach.h"
+#include "Muon_tra.h"
 #define MAXRANDOM 10000
 using namespace std;
 
@@ -13,26 +14,21 @@ enum TrangThaiCuaThe{Dang_Hoat_Dong = 1, Khoa = 0};
 int DayNgauNhien[MAXRANDOM];
 int Random_Ptr = 0;
 
-struct LichSuMuonSach {
-    DauSach* ThongTinDauSach;
-    LichSuMuonSach* next; 
-};
-
 struct The_Doc_Gia {
     unsigned int MATHE;
     string Ho;
     string Ten;
     TrangThaiCuaThe TrangThai;
     Phai phai;
-    LichSuMuonSach* head_lsms = nullptr;
+    MUONTRA* head_lsms = nullptr;
 };
 
-struct Danh_Sach_The_Doc_Gia_Theo_Ma_So {
+struct Danh_Sach_The_Doc_Gia {
     The_Doc_Gia thong_tin;
-    Danh_Sach_The_Doc_Gia_Theo_Ma_So* ptr_left = nullptr;
-    Danh_Sach_The_Doc_Gia_Theo_Ma_So* ptr_right = nullptr;
-    Danh_Sach_The_Doc_Gia_Theo_Ma_So(){};
-    Danh_Sach_The_Doc_Gia_Theo_Ma_So(const The_Doc_Gia& thong_tin_the_doc_gia) {
+    Danh_Sach_The_Doc_Gia* ptr_left = nullptr;
+    Danh_Sach_The_Doc_Gia* ptr_right = nullptr;
+    Danh_Sach_The_Doc_Gia(){};
+    Danh_Sach_The_Doc_Gia(const The_Doc_Gia& thong_tin_the_doc_gia) {
         thong_tin.MATHE = thong_tin_the_doc_gia.MATHE;
         thong_tin.Ho = thong_tin_the_doc_gia.Ho;
         thong_tin.Ten = thong_tin_the_doc_gia.Ten;
@@ -41,23 +37,9 @@ struct Danh_Sach_The_Doc_Gia_Theo_Ma_So {
     };
 };
 
-struct Danh_Sach_The_Doc_Gia_Theo_Ten {
-    The_Doc_Gia thong_tin;
-    Danh_Sach_The_Doc_Gia_Theo_Ten* ptr_left = nullptr;
-    Danh_Sach_The_Doc_Gia_Theo_Ten* ptr_right = nullptr;
-    Danh_Sach_The_Doc_Gia_Theo_Ten(){};
-    Danh_Sach_The_Doc_Gia_Theo_Ten(const The_Doc_Gia& thong_tin_the_doc_gia) {
-        thong_tin.MATHE = thong_tin_the_doc_gia.MATHE;
-        thong_tin.Ho = thong_tin_the_doc_gia.Ho;
-        thong_tin.Ten = thong_tin_the_doc_gia.Ten;
-        thong_tin.TrangThai = thong_tin_the_doc_gia.TrangThai;
-        thong_tin.phai = thong_tin_the_doc_gia.phai;
-    };
-};
-
-void Them_Doc_Gia_Theo_Ma_So(Danh_Sach_The_Doc_Gia_Theo_Ma_So* &root, const The_Doc_Gia& thong_tin_the_doc_gia ) {
+void Them_Doc_Gia(Danh_Sach_The_Doc_Gia* &root, const The_Doc_Gia& thong_tin_the_doc_gia ) {
     if ( root == nullptr ) {
-        Danh_Sach_The_Doc_Gia_Theo_Ma_So* con_tro_the_doc_gia = new Danh_Sach_The_Doc_Gia_Theo_Ma_So(thong_tin_the_doc_gia);
+        Danh_Sach_The_Doc_Gia* con_tro_the_doc_gia = new Danh_Sach_The_Doc_Gia(thong_tin_the_doc_gia);
         root = con_tro_the_doc_gia;
     } else {
         if ( root->thong_tin.MATHE == thong_tin_the_doc_gia.MATHE ) {
@@ -65,16 +47,16 @@ void Them_Doc_Gia_Theo_Ma_So(Danh_Sach_The_Doc_Gia_Theo_Ma_So* &root, const The_
             return;
         }
         if ( root->thong_tin.MATHE < thong_tin_the_doc_gia.MATHE ) {
-            Them_Doc_Gia_Theo_Ma_So(root->ptr_right, thong_tin_the_doc_gia);
+            Them_Doc_Gia(root->ptr_right, thong_tin_the_doc_gia);
         } else {
-            Them_Doc_Gia_Theo_Ma_So(root->ptr_left, thong_tin_the_doc_gia);
+            Them_Doc_Gia(root->ptr_left, thong_tin_the_doc_gia);
         }
     }
 }
 
-void Them_Doc_Gia_Theo_Ten(Danh_Sach_The_Doc_Gia_Theo_Ten* &root, const The_Doc_Gia& thong_tin_the_doc_gia ) {
+void Them_Doc_Gia_Theo_Ten(Danh_Sach_The_Doc_Gia* &root, const The_Doc_Gia& thong_tin_the_doc_gia ) {
     if ( root == nullptr ) {
-        Danh_Sach_The_Doc_Gia_Theo_Ten* con_tro_the_doc_gia = new Danh_Sach_The_Doc_Gia_Theo_Ten(thong_tin_the_doc_gia);
+        Danh_Sach_The_Doc_Gia* con_tro_the_doc_gia = new Danh_Sach_The_Doc_Gia(thong_tin_the_doc_gia);
         root = con_tro_the_doc_gia;
     } else {
         if ( root->thong_tin.Ten == thong_tin_the_doc_gia.Ten ) {
@@ -82,84 +64,51 @@ void Them_Doc_Gia_Theo_Ten(Danh_Sach_The_Doc_Gia_Theo_Ten* &root, const The_Doc_
             return;
         }
         if ( root->thong_tin.Ten < thong_tin_the_doc_gia.Ten ) {
-            Them_Doc_Gia_Theo_Ten(root->ptr_right, thong_tin_the_doc_gia);
+            Them_Doc_Gia(root->ptr_right, thong_tin_the_doc_gia);
         } else {
-            Them_Doc_Gia_Theo_Ten(root->ptr_left, thong_tin_the_doc_gia);
+            Them_Doc_Gia(root->ptr_left, thong_tin_the_doc_gia);
         }
     }
 }
-Danh_Sach_The_Doc_Gia_Theo_Ma_So* rp_ma_so;
-Danh_Sach_The_Doc_Gia_Theo_Ten* rp_ten;
 
-void Xoa_Truong_Hop_Co_Hai_Cay_Con_Ma_So(Danh_Sach_The_Doc_Gia_Theo_Ma_So* r ) {
+Danh_Sach_The_Doc_Gia* rp;
+
+void Xoa_Truong_Hop_Co_Hai_Cay_Con(Danh_Sach_The_Doc_Gia* r ) {
     if ( r->ptr_left != nullptr ) {
-        Xoa_Truong_Hop_Co_Hai_Cay_Con_Ma_So(r->ptr_left);
+        Xoa_Truong_Hop_Co_Hai_Cay_Con(r->ptr_left);
     } else {
-        rp_ma_so->thong_tin = r->thong_tin;
-        Danh_Sach_The_Doc_Gia_Theo_Ma_So* temp = r;
+        rp->thong_tin = r->thong_tin;
+        Danh_Sach_The_Doc_Gia* temp = r;
         r = r->ptr_right;
         delete temp;
     }
 }
 
-void Xoa_Truong_Hop_Co_Hai_Cay_Con_Ten(Danh_Sach_The_Doc_Gia_Theo_Ten* r ) {
-    if ( r->ptr_left != nullptr ) {
-        Xoa_Truong_Hop_Co_Hai_Cay_Con_Ten(r->ptr_left);
-    } else {
-        rp_ma_so->thong_tin = r->thong_tin;
-        Danh_Sach_The_Doc_Gia_Theo_Ten* temp = r;
-        r = r->ptr_right;
-        delete temp;
-    }
-}
-
-void Xoa_Doc_Gia_Theo_Ma_So(Danh_Sach_The_Doc_Gia_Theo_Ma_So* &r, const int& ma_the_doc_gia) {
+void Xoa_Doc_Gia(Danh_Sach_The_Doc_Gia* &r, const int& ma_the_doc_gia) {
     if ( r == nullptr ) {
         cout << "Khong Tim Thay " << ma_the_doc_gia << endl;
     }
     else {  
         if ( r->thong_tin.MATHE < ma_the_doc_gia ) {
-            Xoa_Doc_Gia_Theo_Ma_So(r->ptr_right, ma_the_doc_gia );
+            Xoa_Doc_Gia(r->ptr_right, ma_the_doc_gia );
         } else if ( r->thong_tin.MATHE > ma_the_doc_gia ) {
-            Xoa_Doc_Gia_Theo_Ma_So(r->ptr_left, ma_the_doc_gia );
+            Xoa_Doc_Gia(r->ptr_left, ma_the_doc_gia );
         } else {
-            rp_ma_so = r;
-            if ( rp_ma_so->ptr_right == nullptr ) {
-                r = rp_ma_so->ptr_left;
-            } else if ( rp_ma_so->ptr_left == nullptr ) {
-                r = rp_ma_so->ptr_right;
+            rp = r;
+            if ( rp->ptr_right == nullptr ) {
+                r = rp->ptr_left;
+            } else if ( rp->ptr_left == nullptr ) {
+                r = rp->ptr_right;
             } else {
-                Xoa_Truong_Hop_Co_Hai_Cay_Con_Ma_So(rp_ma_so->ptr_right);
+                Xoa_Truong_Hop_Co_Hai_Cay_Con(rp->ptr_right);
             }
-            delete rp_ma_so;
+            delete rp;
         }
     }
 }
 
-void Xoa_Doc_Gia_Theo_Ten(Danh_Sach_The_Doc_Gia_Theo_Ten* &r, const string& ten_doc_gia) {
-    if (r == nullptr) {
-        cout << "Khong Tim Thay " << ten_doc_gia << endl;
-        return;
-    }
-    if (r->thong_tin.Ten < ten_doc_gia) {
-        Xoa_Doc_Gia_Theo_Ten(r->ptr_right, ten_doc_gia);
-    } else if (r->thong_tin.Ten > ten_doc_gia) {
-        Xoa_Doc_Gia_Theo_Ten(r->ptr_left, ten_doc_gia);
-    } else {
-        rp_ten = r;
-        if (rp_ten->ptr_right == nullptr) {
-            r = rp_ten->ptr_left;
-        } else if (rp_ten->ptr_left == nullptr) {
-            r = rp_ten->ptr_right;
-        } else {
-            Xoa_Truong_Hop_Co_Hai_Cay_Con_Ten(rp_ten->ptr_right);
-        }
-        delete rp_ten;
-    }
-}
-
-Danh_Sach_The_Doc_Gia_Theo_Ma_So* Tim_Kiem_Theo_Ma_So(Danh_Sach_The_Doc_Gia_Theo_Ma_So* root, const int& mathe ) {
-    Danh_Sach_The_Doc_Gia_Theo_Ma_So* curr = root;
+Danh_Sach_The_Doc_Gia* Tim_Kiem(Danh_Sach_The_Doc_Gia* root, const int& mathe ) {
+    Danh_Sach_The_Doc_Gia* curr = root;
     while ( curr != nullptr && curr->thong_tin.MATHE != mathe ) {
         if ( curr->thong_tin.MATHE < mathe ) {
             curr = curr->ptr_right;
@@ -170,36 +119,31 @@ Danh_Sach_The_Doc_Gia_Theo_Ma_So* Tim_Kiem_Theo_Ma_So(Danh_Sach_The_Doc_Gia_Theo
     return curr;
 }
 
-Danh_Sach_The_Doc_Gia_Theo_Ten* Tim_Kiem_Theo_Ten(Danh_Sach_The_Doc_Gia_Theo_Ten* root, const int& mathe ) {
-    Danh_Sach_The_Doc_Gia_Theo_Ten* curr = root;
-    while ( curr != nullptr && curr->thong_tin.MATHE != mathe ) {
-        if ( curr->thong_tin.MATHE < mathe ) {
-            curr = curr->ptr_right;
-        } else {
-            curr = curr->ptr_left;
-        }
-    }
-    return curr;
-}
-
-void CapNhatLichSuMuonSachMaSo(int MaThe, LichSuMuonSach* SachMuon, Danh_Sach_The_Doc_Gia_Theo_Ma_So* root_ma_so) {
-    Danh_Sach_The_Doc_Gia_Theo_Ma_So* DocGiaMuonSach = Tim_Kiem_Theo_Ma_So(root_ma_so, MaThe);
-    SachMuon->next = DocGiaMuonSach->thong_tin.head_lsms;
-    DocGiaMuonSach->thong_tin.head_lsms = SachMuon;
-}
-
-void CapNhatLichSuMuonSachTen(int MaThe, LichSuMuonSach* SachMuon, Danh_Sach_The_Doc_Gia_Theo_Ten* root_ten) {
-    Danh_Sach_The_Doc_Gia_Theo_Ten* DocGiaMuonSach = Tim_Kiem_Theo_Ten(root_ten, MaThe);
-    SachMuon->next = DocGiaMuonSach->thong_tin.head_lsms;
-    DocGiaMuonSach->thong_tin.head_lsms = SachMuon;
-}
-
-void Inorder(Danh_Sach_The_Doc_Gia_Theo_Ten* root ) {
+void Inorder(Danh_Sach_The_Doc_Gia* root ) {
     if ( root != nullptr ) {
         Inorder(root->ptr_left);
         cout << root->thong_tin.MATHE << endl;
         Inorder(root->ptr_right);
     }
+}
+
+void Tao_Danh_Sach_Theo_Ten(Danh_Sach_The_Doc_Gia* root_maso, Danh_Sach_The_Doc_Gia* &root_ten) {
+    if ( root_maso == nullptr ) {
+        return;
+    }
+
+    Them_Doc_Gia_Theo_Ten(root_ten, root_maso->thong_tin);
+    Tao_Danh_Sach_Theo_Ten(root_maso->ptr_left, root_ten);
+    Tao_Danh_Sach_Theo_Ten(root_maso->ptr_right, root_ten);
+}
+
+void Xoa_Danh_Sach_Theo_Ten(Danh_Sach_The_Doc_Gia* &root_ten) {
+    if ( root_ten == nullptr ) {
+        return;
+    }
+    Xoa_Danh_Sach_Theo_Ten(root_ten->ptr_left);
+    Xoa_Danh_Sach_Theo_Ten(root_ten->ptr_right);
+    delete root_ten;
 }
 
 void swap( int& a, int& b ) {
@@ -239,7 +183,7 @@ void TraVeSoNgauNhien(int So_Tra_Ve) {
     }
 }
 
-void Doc_Thong_Tin_Tu_File(const string& file_name, Danh_Sach_The_Doc_Gia_Theo_Ma_So* &root_ma_so, Danh_Sach_The_Doc_Gia_Theo_Ten* & root_ten) {
+void Doc_Thong_Tin_Tu_File(const string& file_name, Danh_Sach_The_Doc_Gia* &root_ma_so) {
     ifstream file(file_name);
     if (!file.is_open()) {
         cout << "Không thể mở file: " << file_name << endl;
@@ -262,16 +206,8 @@ void Doc_Thong_Tin_Tu_File(const string& file_name, Danh_Sach_The_Doc_Gia_Theo_M
         DocGia.Ten = Ten;
         DocGia.phai = phai;
         DocGia.TrangThai = TrangThaiCuaThe::Dang_Hoat_Dong;
-        Them_Doc_Gia_Theo_Ma_So(root_ma_so, DocGia);
-        Them_Doc_Gia_Theo_Ten(root_ten, DocGia);
     }
     file.close();
 }
 
-// int main() {
-//     LayDayNgauNhien(DayNgauNhien);
-//     int so = LayMaTheNgauNhien();
-//     cout << so;
-// }
-
-#endif // THE_DOC_GIA_H
+#endif
