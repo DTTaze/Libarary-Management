@@ -4,6 +4,7 @@
 #include <fstream>
 #include "ngay.cpp"
 #include "The_doc_gia.h"
+#include "Muon_tra.h"
 using namespace std;
 
 /*f. Mượn sách : nhập vào mã thẻ độc giả, chương trình sẽ liệt kê các sách mà độc giả đang mượn. Mỗi độc giả chỉ được mượn tối đa 3 cuốn, 
@@ -12,11 +13,6 @@ g. Trả sách
 h. Liệt kê danh sách các mã sách, tên sách mà 1 độc giả có số thẻ X đang mượn
 i. In danh sách độc giả mượn sách quá hạn theo thứ tự thời gian quá hạn giảm dần
 j. In 10 sách có số lượt mượn nhiều nhất.*/
-
-struct DanhSachTheDocGia { // danh sách các độc giả
-    The_Doc_Gia docgia;
-    DanhSachTheDocGia *next = nullptr;
-};
 
 int TrangThai(Date ngay_muon, Date ngay_tra) { // trạng thái sách của độc giả 
     int songay = DemSoNgay(ngay_muon, ngay_tra);
@@ -31,33 +27,6 @@ int TrangThai(Date ngay_muon, Date ngay_tra) { // trạng thái sách của đ
     } else {cout<<"nhap sai! vui long nhap lai."<<endl;return -1;}
 }
 
-struct MUONTRA { // thong tin quyen sach doc gia da va dang muon
-    string masach;
-    Date NgayMuon;
-    Date NgayTra;
-    int trangthai;
-    MUONTRA(string ma, const Date &ngayMuon, const Date &ngayTra) : masach(ma), NgayMuon(ngayMuon), NgayTra(ngayTra) 
-    { trangthai = TrangThai(NgayMuon, NgayTra);}
-
-    bool operator==(const MUONTRA &other) const {
-        return masach == other.masach &&
-               NgayMuon == other.NgayMuon &&
-               NgayTra == other.NgayTra;
-    }
-};
-
-struct DanhSachMUONTRA { // danh sach cac quyen sach da hoac dang muon
-    MUONTRA data;
-    DanhSachMUONTRA *next = nullptr;
-    DanhSachMUONTRA(const MUONTRA &muontra) : data(muontra), next(nullptr) {}
-};
-
-struct DocGiaMuonSach { 
-    The_Doc_Gia docgia;
-    DanhSachMUONTRA *danhsachmuontra;
-
-    DocGiaMuonSach(const The_Doc_Gia &thedocgia) : docgia(thedocgia), danhsachmuontra(nullptr) {}
-};
 
 int DemSoSachDangMuon(DanhSachMUONTRA *demsach) {
     DanhSachMUONTRA *temp = demsach;

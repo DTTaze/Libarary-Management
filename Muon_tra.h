@@ -20,18 +20,7 @@ struct DanhSachTheDocGia { // danh sách các độc giả
     DanhSachTheDocGia *next = nullptr;
 };
 
-int TrangThai(Date ngay_muon, Date ngay_tra) { // trạng thái sách của độc giả 
-    int songay = DemSoNgay(ngay_muon, ngay_tra);
-    if(songay != -1) {
-        if(ngay_tra.day == 0) {return 0;} // chưa trả
-        else if(songay<=7) {
-            return 1; // đã trả
-        }
-        else {
-            return 2; // mất sách
-        }
-    } else {cout<<"nhap sai! vui long nhap lai."<<endl;return -1;}
-}
+int TrangThai(Date ngay_muon, Date ngay_tra) ;
 
 struct MUONTRA { // thong tin quyen sach doc gia da va dang muon
     string masach;
@@ -61,106 +50,22 @@ struct DocGiaMuonSach {
     DocGiaMuonSach(const The_Doc_Gia &thedocgia) : docgia(thedocgia), danhsachmuontra(nullptr) {}
 };
 
-int DemSoSachDangMuon(DanhSachMUONTRA *demsach) {
-    DanhSachMUONTRA *temp = demsach;
-    int dem = 0;
-    
-    while(temp!=nullptr) {
-        if(temp->data.trangthai == 0 || temp->data.trangthai == 2) {
-        temp = temp->next;
-        dem++;
-        }
-    }
-    return dem;
-}
+int DemSoSachDangMuon(DanhSachMUONTRA *demsach) ;
 
-void ThemSach (DanhSachMUONTRA * &head, string ma, const Date &ngayMuon, const Date &ngayTra) {
-    MUONTRA data(ma, ngayMuon, ngayTra);
-    DanhSachMUONTRA * newMUONTRA = new DanhSachMUONTRA(data);
-    if (head == nullptr)
-    {
-        head = newMUONTRA;
-    }
-    else {
-        DanhSachMUONTRA * temp = head;
-        while(temp->next != nullptr) {
-            temp = temp->next;
-        }
-        temp->next = newMUONTRA;
-    }
-}
+void ThemSach (DanhSachMUONTRA * &head, string ma, const Date &ngayMuon, const Date &ngayTra) ;
 
-bool Empty(DanhSachMUONTRA * First)
-{   return(First == NULL);
-}
+bool Empty(DanhSachMUONTRA * First);
 
-int XoaSachDauTien (DanhSachMUONTRA *&First)
-{ DanhSachMUONTRA * p;
-   if (Empty(First))      return 0;
-    p = First;    // nut can xoa la nut dau
-    First = p->next;
-    delete p; 
-    return 1;
-}
+int XoaSachDauTien (DanhSachMUONTRA *&First);
 
-int XoaSachSauSachP(DanhSachMUONTRA * p)
-{   DanhSachMUONTRA * q;
-  // nếu p là NULL hoặc sau p không có nút
-   if((p == NULL) || (p->next == NULL))	
-      return 0;
-      q = p->next;  // q chi nut can xoa
-      p->next = q->next;
-     delete q;
-     return 1;
-}
 
-int XoaSachTheoThongTin(DanhSachMUONTRA * &head, string ma, const Date &ngayMuon, const Date &ngayTra) {  
-    MUONTRA data(ma, ngayMuon, ngayTra);
-    DanhSachMUONTRA * p=head;
-  if (head == NULL ) return 0;
-  if (head->data == data ) {
-        XoaSachDauTien(head); return 1;
-  }
-     
-while (p->next != nullptr) {
-        if (p->next->data == data) {
-            XoaSachSauSachP(p);
-            return 1;
-        }
-        p = p->next;
-    }
+int XoaSachSauSachP(DanhSachMUONTRA * p);
 
-    return 0;
-}
+int XoaSachTheoThongTin(DanhSachMUONTRA * &head, string ma, const Date &ngayMuon, const Date &ngayTra) ;
 
 enum DenSach {daden, chuaden};
 
-void InManHinhDSSach(DocGiaMuonSach * head) {
-    DocGiaMuonSach * temp = head;
-    DanhSachMUONTRA *tmp = temp->danhsachmuontra;
-    while(tmp != nullptr) {
-        cout << tmp->data.masach <<endl;
-        InManHinhNgayThangNam(tmp->data.NgayMuon);
-        InManHinhNgayThangNam(tmp->data.NgayTra);
-        if(tmp->data.trangthai == 0) {
-            cout<< "0" << endl;
-        } else if(tmp->data.trangthai == 1) {
-            cout<< "1" << endl;
-        } else {
-            DenSach densach;
-            if(densach == daden) {
-                temp->docgia.TrangThai = Dang_Hoat_Dong;
-                tmp->data.trangthai = 1;
-                cout<< "1" << endl;
-            }
-            else {
-                temp->docgia.TrangThai = Khoa;
-                cout<< "2" << endl;
-            }
-        }
-        tmp = tmp->next;
-    }
-}
+void InManHinhDSSach(DocGiaMuonSach * head) ;
 
 // void LuuNgayMuon(const string& fileName, const Date& ngay_muon) {
 //     ofstream file(fileName);
@@ -173,53 +78,14 @@ void InManHinhDSSach(DocGiaMuonSach * head) {
 //     }
 // }
 
-void ThemSachVaoLSMS(DanhSachMUONTRA * &sach, string ma, const Date &ngayMuon, const Date &ngayTra) {
-    MUONTRA thongtinmuontra (ma, ngayMuon, ngayTra);
-    DanhSachMUONTRA * newLichSu = new DanhSachMUONTRA( thongtinmuontra);
-    if (sach == nullptr)
-    {
-        sach = newLichSu;
-    }
-    else {
-        DanhSachMUONTRA* temp = sach;
-        while(temp->next != nullptr) {
-            temp = temp->next;
-        }
-        temp->next = newLichSu;
-    }
-}
+void ThemSachVaoLSMS(DanhSachMUONTRA * &sach, string ma, const Date &ngayMuon, const Date &ngayTra) ;
 
-void MuonSach (DocGiaMuonSach *doc_gia) {
-    DocGiaMuonSach *tmp = doc_gia;
-    DanhSachMUONTRA *lichsu = tmp->danhsachmuontra;
-    
-    int sosach = DemSoSachDangMuon(lichsu);
-    if(doc_gia->docgia.TrangThai == Khoa || lichsu->data.trangthai == 2 || sosach>3) {
-        cout<<"khong the muon sach"<<endl;
-        return;
-    } else {
-        int luachon = 0; // 1: muon sach    2: thoat ra
-        while (sosach <= 3 || luachon == 2) {
-            cout<<"nhap lua chon: "; cin>>luachon;
-            string ma; 
-            cout<<"nhap ma: ";
-            getline(cin, ma);
-            Date ngaymuon = NgayMuon();
-            Date ngaytra = NgayTraThucTe();
-            ThemSach(lichsu, ma, ngaymuon, ngaytra);
-            ThemSachVaoLSMS(lichsu, ma, ngaymuon, ngaytra);
-        }
-    }
-}
+void MuonSach (DocGiaMuonSach *doc_gia) ;
 
 
-void TraSach (DocGiaMuonSach doc_gia, string ma_sach) {
-    
-}
+void TraSach (DocGiaMuonSach doc_gia, string ma_sach) ;
 
-void DanhSachSachDocGiaMuon(DocGiaMuonSach doc_gia) {
-
-}
+void DanhSachSachDocGiaMuon(DocGiaMuonSach doc_gia) ;
 
 // void DocFile(const string &tenFile, DocGiaMuonSach *&doc_gia) {
 //     ifstream file("Danh_sach_dau_sach.txt");
