@@ -138,6 +138,25 @@ int TimKiemNhiPhanTheLoai(DanhSachDauSach &danh_sach_dau_sach,string key){
 	}
 	return ket_qua;	
 }
+
+int TimKiemNhiPhanMaSach(DanhSachDauSach &danh_sach_dau_sach,string ma_sach){
+	int left = 0;
+	int right = danh_sach_dau_sach.demsach-1;
+	int ket_qua = -1;
+	while(left <= right){
+		int mid = (left + right) /2;
+		
+		if (danh_sach_dau_sach.node[mid]->dms->masach == ma_sach) {
+            ket_qua = mid; 
+        } else if (danh_sach_dau_sach.node[mid]->dms->masach < ma_sach) {//key ben phai
+            left = mid + 1; 
+        } else {//key ben trai
+            right = mid - 1; 
+        }
+	}
+	return ket_qua;	
+}
+
 //Su dung tham chieu nen phai tao ban sao roi xoa ban sao
 void InTheoTungTheLoai(DanhSachDauSach &danh_sach_dau_sach){
 
