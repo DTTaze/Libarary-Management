@@ -46,7 +46,6 @@ struct Danh_Sach_The_Doc_Gia {
 
 void Them_Doc_Gia(Danh_Sach_The_Doc_Gia* &root, const The_Doc_Gia& thong_tin_the_doc_gia ) ;
 
-
 void Them_Doc_Gia_Theo_Ten(Danh_Sach_The_Doc_Gia* &root, const The_Doc_Gia& thong_tin_the_doc_gia );
 
 Danh_Sach_The_Doc_Gia* rp;
