@@ -101,9 +101,9 @@ while (p->next != nullptr) {
 
 enum DenSach {daden, chuaden};
 
-void InManHinhDSSach(DocGiaMuonSach * head) {
-    DocGiaMuonSach * temp = head;
-    DanhSachMUONTRA *tmp = temp->danhsachmuontra;
+void InManHinhDSSach(The_Doc_Gia * head) {
+    The_Doc_Gia * doc_gia = head;
+    DanhSachMUONTRA *tmp = doc_gia->head_lsms;
     while(tmp != nullptr) {
         cout << tmp->data.masach <<endl;
         InManHinhNgayThangNam(tmp->data.NgayMuon);
@@ -115,12 +115,12 @@ void InManHinhDSSach(DocGiaMuonSach * head) {
         } else {
             DenSach densach;
             if(densach == daden) {
-                temp->docgia.TrangThai = Dang_Hoat_Dong;
+                doc_gia->TrangThai = Dang_Hoat_Dong;
                 tmp->data.trangthai = 1;
                 cout<< "1" << endl;
             }
             else {
-                temp->docgia.TrangThai = Khoa;
+                doc_gia->TrangThai = Khoa;
                 cout<< "2" << endl;
             }
         }
@@ -155,12 +155,12 @@ void ThemSachVaoLSMS(DanhSachMUONTRA * &sach, string ma, const Date &ngayMuon, c
     }
 }
 
-void MuonSach (DocGiaMuonSach *doc_gia) {
-    DocGiaMuonSach *tmp = doc_gia;
-    DanhSachMUONTRA *lichsu = tmp->danhsachmuontra;
+void MuonSach (The_Doc_Gia *doc_gia) {
+    The_Doc_Gia *tmp = doc_gia;
+    DanhSachMUONTRA *lichsu = tmp->head_lsms;
     
     int sosach = DemSoSachDangMuon(lichsu);
-    if(doc_gia->docgia.TrangThai == Khoa || lichsu->data.trangthai == 2 || sosach>3) {
+    if(doc_gia->TrangThai == Khoa || lichsu->data.trangthai == 2 || sosach>3) {
         cout<<"khong the muon sach"<<endl;
         return;
     } else {
@@ -179,14 +179,14 @@ void MuonSach (DocGiaMuonSach *doc_gia) {
 }
 
 
-void TraSach (DocGiaMuonSach doc_gia, string ma_sach) {
-    int thongtin = XoaSachTheoThongTin(doc_gia.danhsachmuontra, ma_sach);
+void TraSach (The_Doc_Gia *doc_gia, string ma_sach) {
+    int thongtin = XoaSachTheoThongTin(doc_gia->head_lsms, ma_sach);
     if(thongtin == 1) cout<<"doc gia da tra sach" << endl;
     else cout<<"khong co thong tin ve sach doc gia muon" << endl;
 }
 
-void DanhSachSachDocGiaMuon(DocGiaMuonSach *doc_gia) {
-    cout<<"ten doc gia: " << doc_gia->docgia.Ho << " " << doc_gia->docgia.Ten << endl;
+void DanhSachSachDocGiaMuon(The_Doc_Gia *doc_gia) {
+    cout<<"ten doc gia: " << doc_gia->Ho << " " << doc_gia->Ten << endl;
     InManHinhDSSach(doc_gia);
 }
 

@@ -38,12 +38,12 @@ struct DanhSachMUONTRA { // danh sach cac quyen sach da hoac dang muon
     DanhSachMUONTRA(const MUONTRA &muontra) : data(muontra), next(nullptr) {}
 };
 
-struct DocGiaMuonSach { 
-    The_Doc_Gia docgia;
-    DanhSachMUONTRA *danhsachmuontra;
+// struct DocGiaMuonSach { 
+//     The_Doc_Gia docgia;
+//     DanhSachMUONTRA *danhsachmuontra;
 
-    DocGiaMuonSach(const The_Doc_Gia &thedocgia) : docgia(thedocgia), danhsachmuontra(nullptr) {}
-};
+//     DocGiaMuonSach(const The_Doc_Gia &thedocgia) : docgia(thedocgia), danhsachmuontra(nullptr) {}
+// };
 
 int DemSoSachDangMuon(DanhSachMUONTRA *demsach) ;
 
@@ -60,7 +60,7 @@ int XoaSachTheoThongTin(DanhSachMUONTRA * &head, string ma, const Date &ngayMuon
 
 enum DenSach {daden, chuaden};
 
-void InManHinhDSSach(DocGiaMuonSach * head) ;
+void InManHinhDSSach(The_Doc_Gia * head) ;
 
 // void LuuNgayMuon(const string& fileName, const Date& ngay_muon) {
 //     ofstream file(fileName);
@@ -75,12 +75,12 @@ void InManHinhDSSach(DocGiaMuonSach * head) ;
 
 void ThemSachVaoLSMS(DanhSachMUONTRA * &sach, string ma, const Date &ngayMuon, const Date &ngayTra) ;
 
-void MuonSach (DocGiaMuonSach *doc_gia) ;
+void MuonSach (The_Doc_Gia *doc_gia) ;
 
 
-void TraSach (DocGiaMuonSach doc_gia, string ma_sach) ;
+void TraSach (The_Doc_Gia doc_gia, string ma_sach) ;
 
-void DanhSachSachDocGiaMuon(DocGiaMuonSach doc_gia) ;
+void DanhSachSachDocGiaMuon(The_Doc_Gia doc_gia) ;
 
 // void DocFile(const string &tenFile, DocGiaMuonSach *&doc_gia) {
 //     ifstream file("Danh_sach_dau_sach.txt");
