@@ -101,9 +101,9 @@ while (p->next != nullptr) {
 
 enum DenSach {daden, chuaden};
 
-void InManHinhDSSach(The_Doc_Gia * head) {
-    The_Doc_Gia * doc_gia = head;
-    DanhSachMUONTRA *tmp = doc_gia->head_lsms;
+void InManHinhDSSach(Danh_Sach_The_Doc_Gia * head) {
+    Danh_Sach_The_Doc_Gia * doc_gia = head;
+    DanhSachMUONTRA *tmp = doc_gia->thong_tin.head_lsms;
     while(tmp != nullptr) {
         cout << tmp->data.masach <<endl;
         InManHinhNgayThangNam(tmp->data.NgayMuon);
@@ -115,16 +115,24 @@ void InManHinhDSSach(The_Doc_Gia * head) {
         } else {
             DenSach densach;
             if(densach == daden) {
-                doc_gia->TrangThai = Dang_Hoat_Dong;
+                doc_gia->thong_tin.TrangThai = Dang_Hoat_Dong;
                 tmp->data.trangthai = 1;
                 cout<< "1" << endl;
             }
             else {
-                doc_gia->TrangThai = Khoa;
+                doc_gia->thong_tin.TrangThai = Khoa;
                 cout<< "2" << endl;
             }
         }
         tmp = tmp->next;
+    }
+}
+
+void InManHinhDSSachDangMuon(Danh_Sach_The_Doc_Gia *head) {
+    Danh_Sach_The_Doc_Gia *doc_gia = head;
+    DanhSachMUONTRA *danh_sach = doc_gia->thong_tin.head_lsms;
+    while(danh_sach != nullptr) {
+        cout<<" "<<endl;
     }
 }
 
@@ -155,12 +163,12 @@ void ThemSachVaoLSMS(DanhSachMUONTRA * &sach, string ma, const Date &ngayMuon, c
     }
 }
 
-void MuonSach (The_Doc_Gia *doc_gia) {
-    The_Doc_Gia *tmp = doc_gia;
-    DanhSachMUONTRA *lichsu = tmp->head_lsms;
+void MuonSach (Danh_Sach_The_Doc_Gia *doc_gia) {
+    Danh_Sach_The_Doc_Gia *tmp = doc_gia;
+    DanhSachMUONTRA *lichsu = tmp->thong_tin.head_lsms;
     
     int sosach = DemSoSachDangMuon(lichsu);
-    if(doc_gia->TrangThai == Khoa || lichsu->data.trangthai == 2 || sosach>3) {
+    if(doc_gia->thong_tin.TrangThai == Khoa || lichsu->data.trangthai == 2 || sosach>3) {
         cout<<"khong the muon sach"<<endl;
         return;
     } else {
@@ -179,14 +187,21 @@ void MuonSach (The_Doc_Gia *doc_gia) {
 }
 
 
-void TraSach (The_Doc_Gia *doc_gia, string ma_sach) {
-    int thongtin = XoaSachTheoThongTin(doc_gia->head_lsms, ma_sach);
-    if(thongtin == 1) cout<<"doc gia da tra sach" << endl;
-    else cout<<"khong co thong tin ve sach doc gia muon" << endl;
+void TraSach (Danh_Sach_The_Doc_Gia *doc_gia, string ma_sach) {
+    Danh_Sach_The_Doc_Gia *temp = doc_gia;
+    
+    while (temp->thong_tin.head_lsms != nullptr) {
+        if(temp->thong_tin.head_lsms->data.masach == ma_sach) {
+            temp->thong_tin.head_lsms->data.NgayTra = NgayTraThucTe();
+            cout<<"da tra sach thanh cong"<<endl;
+            return;
+        }
+    }    
+    cout<<"khong co thong tin ve sach doc gia muon" << endl;
 }
 
-void DanhSachSachDocGiaMuon(The_Doc_Gia *doc_gia) {
-    cout<<"ten doc gia: " << doc_gia->Ho << " " << doc_gia->Ten << endl;
+void DanhSachSachDocGiaMuon(Danh_Sach_The_Doc_Gia *doc_gia) {
+    cout<<"ten doc gia: " << doc_gia->thong_tin.Ho << " " << doc_gia->thong_tin.Ten << endl;
     InManHinhDSSach(doc_gia);
 }
 
@@ -240,7 +255,7 @@ void DanhSachSachDocGiaMuon(The_Doc_Gia *doc_gia) {
 // }
 
 // int main() {
-//     DocGiaMuonSach *doc_gia = new DocGiaMuonSach(The_Doc_Gia()); // Assume constructor exists
+//     DocGiaMuonSach *doc_gia = new DocGiaMuonSach(Danh_Sach_The_Doc_Gia()); // Assume constructor exists
 //     DocFile("file.txt", doc_gia);
 
 //     // Further processing with doc_gia...

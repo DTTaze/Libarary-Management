@@ -39,10 +39,10 @@ struct DanhSachMUONTRA { // danh sach cac quyen sach da hoac dang muon
 };
 
 // struct DocGiaMuonSach { 
-//     The_Doc_Gia docgia;
+//     Danh_Sach_The_Doc_Gia docgia;
 //     DanhSachMUONTRA *danhsachmuontra;
 
-//     DocGiaMuonSach(const The_Doc_Gia &thedocgia) : docgia(thedocgia), danhsachmuontra(nullptr) {}
+//     DocGiaMuonSach(const Danh_Sach_The_Doc_Gia &thedocgia) : docgia(thedocgia), danhsachmuontra(nullptr) {}
 // };
 
 int DemSoSachDangMuon(DanhSachMUONTRA *demsach) ;
@@ -60,7 +60,9 @@ int XoaSachTheoThongTin(DanhSachMUONTRA * &head, string ma, const Date &ngayMuon
 
 enum DenSach {daden, chuaden};
 
-void InManHinhDSSach(The_Doc_Gia * head) ;
+void InManHinhDSSach(Danh_Sach_The_Doc_Gia * head) ;
+
+void InManHinhDSSachDangMuon(Danh_Sach_The_Doc_Gia *head);
 
 // void LuuNgayMuon(const string& fileName, const Date& ngay_muon) {
 //     ofstream file(fileName);
@@ -75,69 +77,10 @@ void InManHinhDSSach(The_Doc_Gia * head) ;
 
 void ThemSachVaoLSMS(DanhSachMUONTRA * &sach, string ma, const Date &ngayMuon, const Date &ngayTra) ;
 
-void MuonSach (The_Doc_Gia *doc_gia) ;
+void MuonSach (Danh_Sach_The_Doc_Gia *doc_gia) ;
 
 
-void TraSach (The_Doc_Gia doc_gia, string ma_sach) ;
+void TraSach (Danh_Sach_The_Doc_Gia doc_gia, string ma_sach) ;
 
-void DanhSachSachDocGiaMuon(The_Doc_Gia doc_gia) ;
-
-// void DocFile(const string &tenFile, DocGiaMuonSach *&doc_gia) {
-//     ifstream file("Danh_sach_dau_sach.txt");
-//     if (!file.is_open()) {
-//         cout << "Không thể mở file." << endl;
-//         return;
-//     }
-
-//     string line;
-//     while (getline(file, line)) {
-//         size_t pos = 0;
-
-//         auto nextToken = [&](char delimiter) {
-//             size_t newPos = line.find(delimiter, pos);
-//             string token = line.substr(pos, newPos - pos);
-//             pos = newPos + 1;
-//             return token;
-//         };
-
-//         string isbn = nextToken('|');
-//         string tensach = nextToken('|');
-//         int sotrang = stoi(nextToken('|'));
-//         string tacgia = nextToken('|');
-//         int namsx = stoi(nextToken('|'));
-//         string theloai = nextToken('|');
-//         nextToken('|'); // Skip one field
-//         string masach = nextToken('|');
-//         string nguoiMuon = nextToken('|');
-
-//         Date ngaymuon;
-//         string ngayMuonStr = nextToken('|');
-//         sscanf(ngayMuonStr.c_str(), "%d/%d/%d", &ngaymuon.day, &ngaymuon.month, &ngaymuon.year);
-
-//         Date ngaytra;
-//         string ngayTraStr = nextToken('|');
-//         if (!ngayTraStr.empty()) {
-//             sscanf(ngayTraStr.c_str(), "%d/%d/%d", &ngaytra.day, &ngaytra.month, &ngaytra.year);
-//         } else {
-//             ngaytra = {0, 0, 0}; // If no return date is provided
-//         }
-
-//         int trangthai = stoi(nextToken('|'));
-
-//         // Add the book to the borrow list
-//         ThemSach(doc_gia->danhsachmuontra, masach, tensach, ngaymuon, ngaytra);
-//     }
-
-//     file.close();
-// }
-
-// int main() {
-//     DocGiaMuonSach *doc_gia = new DocGiaMuonSach(The_Doc_Gia()); // Assume constructor exists
-//     DocFile("file.txt", doc_gia);
-
-//     // Further processing with doc_gia...
-
-//     delete doc_gia; // Clean up
-//     return 0;
-// }
+void DanhSachSachDocGiaMuon(Danh_Sach_The_Doc_Gia doc_gia) ;
 #endif

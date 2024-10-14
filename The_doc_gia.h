@@ -27,7 +27,7 @@ struct The_Doc_Gia {
     string Ten;
     TrangThaiCuaThe TrangThai;
     Phai phai;
-    DanhSachMUONTRA* head_lsms = nullptr;
+    DanhSachMUONTRA* head_lsms = nullptr;// những quyển sách độc giả mượn 
 };
 
 struct Danh_Sach_The_Doc_Gia {
