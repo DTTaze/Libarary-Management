@@ -139,7 +139,7 @@ int TimKiemNhiPhanTheLoai(DanhSachDauSach &danh_sach_dau_sach,string key){
 	return ket_qua;	
 }
 
-int TimKiemNhiPhanMaSach(DanhSachDauSach &danh_sach_dau_sach,string ma_sach){
+string ChuyenMaSachThanhTenSach(DanhSachDauSach &danh_sach_dau_sach,string ma_sach){
 	int left = 0;
 	int right = danh_sach_dau_sach.demsach-1;
 	int ket_qua = -1;
@@ -154,7 +154,7 @@ int TimKiemNhiPhanMaSach(DanhSachDauSach &danh_sach_dau_sach,string ma_sach){
             right = mid - 1; 
         }
 	}
-	return ket_qua;	
+	return danh_sach_dau_sach.node[ket_qua]->tensach;	
 }
 
 //Su dung tham chieu nen phai tao ban sao roi xoa ban sao

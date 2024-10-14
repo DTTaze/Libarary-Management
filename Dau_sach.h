@@ -50,7 +50,9 @@ void ThemDauSach(DanhSachDauSach &danh_sach_dau_sach,const string& I_S_B_N,const
 int TimKiemNhiPhanTenSach(DanhSachDauSach &danh_sach_dau_sach,string key);
 
 int TimKiemNhiPhanTheLoai(DanhSachDauSach &danh_sach_dau_sach,string key);
-//Su dung tham chieu nen phai tao ban sao roi xoa ban sao
+
+string ChuyenMaSachThanhTenSach(DanhSachDauSach &danh_sach_dau_sach,string ma_sach);
+
 void InTheoTungTheLoai(DanhSachDauSach &danh_sach_dau_sach);
 
 
