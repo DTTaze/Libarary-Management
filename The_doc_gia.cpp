@@ -116,60 +116,12 @@ void swap( int& a, int& b ) {
 }
 
 void LayDayNgauNhien () {
-    srand(time(NULL)); 
-	for (int i = 1; i <= MAXRANGE; i++) { // Gắn giá trị cho 2 mảng 
-        DayNgauNhien[i] = i; // Giá trị từ 1->10000
-    }
-    for (int i = 1; i <= 4999; i++) { // Random khoảng bên trái ( 1 -> 4999 )
-        int select = rand() % (4999 - i + 1) + i; 
-        swap(DayNgauNhien[select], DayNgauNhien[i]);
-    }
-    for (int i = 5001; i <= 10000; i++) { // Random khoảng bên phải ( 5001 -> 10000)
-        int select = rand() % (10000 - i + 1) + i; 
-        swap(DayNgauNhien[select], DayNgauNhien[i]);
-    }
 }
 
 int LayMaTheNgauNhien() {
-    // Kiểm tra nếu cả hai con trỏ trái và phải đều đạt giới hạn
-    if (Random_Ptr_Trai > 4999 && Random_Ptr_Phai > 10000) {
-        return -1;  // Không còn số để lấy
-    }
-
-    // Luân phiên lấy từ hai phía
-    if (Lay_Tu_Trai && Random_Ptr_Trai <= 4999) {
-        Lay_Tu_Trai = false; // Chuyển lần kế tiếp sang bên phải
-        return DayNgauNhien[Random_Ptr_Trai++];
-    } else if (!Lay_Tu_Trai && Random_Ptr_Phai <= 10000) {
-        Lay_Tu_Trai = true;  // Chuyển lần kế tiếp sang bên trái
-        return DayNgauNhien[Random_Ptr_Phai++];
-    }
-
-    // Trường hợp một trong hai phía đã hết số
-    return (Random_Ptr_Trai <= 4999) ? DayNgauNhien[Random_Ptr_Trai++] : DayNgauNhien[Random_Ptr_Phai++];
 }
 
 void TraVeSoNgauNhien(int So_Tra_Ve) {
-    int ViTri, ViTriToiDa;
-    if ( So_Tra_Ve < 5000 ) {
-        ViTri = 1;
-        ViTriToiDa = 4999;
-        Random_Ptr_Trai--;
-    } else {
-        ViTri = 5001;
-        ViTriToiDa = 10000;
-        Random_PTr = Random_Ptr_Phai--;
-    }
-    for ( ; ViTri < ViTriToiDa; ViTri++ ) {
-        if ( DayNgauNhien[ViTri] == So_Tra_Ve ) {
-            break;
-        }
-    }
-    if (So_Tra_Ve < 5000) {
-        swap(DayNgauNhien[ViTri], DayNgauNhien[Random_Ptr_Trai]);
-    } else {
-        swap(DayNgauNhien[ViTri], DayNgauNhien[Random_Ptr_Phai]);
-    }
 }
 
 void Doc_Thong_Tin_Tu_File(const string& file_name, Danh_Sach_The_Doc_Gia* &root_ma_so) {
