@@ -1,9 +1,4 @@
 
-#include <iostream>
-#include <ctime>
-#include <fstream>
-#include "ngay.cpp"
-#include "The_doc_gia.h"
 #include "Muon_tra.h"
 using namespace std;
 

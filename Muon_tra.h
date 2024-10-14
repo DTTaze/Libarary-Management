@@ -4,7 +4,7 @@
 #include <iostream>
 #include <ctime>
 #include <fstream>
-#include "ngay.cpp"
+#include "ngay.h"
 #include "The_doc_gia.h"
 using namespace std;
 
